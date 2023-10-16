@@ -50,12 +50,12 @@ Managers can access all the features available to regular users, along with addi
 8. Start the server: `python manage.py runserver`
 9. You should now be able to access the application by visiting: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
-## Manager Dashboard Access
+<!-- ## Manager Dashboard Access
 
 To access the custom dashboard for managers, please use the following credentials:
 
 - Email: manager@example.com
-- Password: managerpass1234
+- Password: managerpass1234 -->
 
 ## How to Contribute
 
