@@ -8,7 +8,7 @@
             <hr>
             {{ form|crispy }}
             <div class="form-group">
-                <button class="btn btn-primary mt-3 w-100" type="submit">Submit</button>
+                <button class="btn btn-primary mt-3 w-100" type="submit">Login</button>
             </div>
             <div class="mt-2 mb-2">
                 <small class="">
@@ -16,11 +16,11 @@
                 </small>
             </div>
         </form>
-        <div class="border-top pt-3">
+        <!-- <div class="border-top pt-3">
             <small class="text-muted">
                 New Here? <a class="text-decoration-none" href="{% url 'accounts:user_register' %}">Create account</a>
             </small>
-        </div>
+        </div> -->
         <div class="border-top pt-3">
             <small class="text-muted"><a class="text-decoration-none" href="{% url 'accounts:manager_login' %}">Manager Login</a>
             </small>

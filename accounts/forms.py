@@ -6,13 +6,13 @@ from .models import Profile, MyUser
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     is_general = forms.BooleanField(required=False, label="ผู้ใช้ทั่วไป")
-    is_manager = forms.BooleanField(required=False, label="ผู้จัดการ")
+    is_manager = forms.BooleanField(required=False, label="ผู้จัดการระบบ")
     is_admin = forms.BooleanField(required=False, label="ผู้ดูแลระบบ")
 
     class Meta:
         model = MyUser
-        fields = ('username', 'password1', 'password2', 'email', 'is_general', 'is_manager', 'is_admin',
-                  'first_name', 'last_name',)
+        fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'is_general', 'is_manager', 'is_admin',
+                  )
            
     def save(self, commit=True):
         user = super(UserRegistrationForm, self).save(commit=False)
@@ -24,7 +24,18 @@ class UserRegistrationForm(UserCreationForm):
             user.save()
         return user
 
+class UserEditForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    is_general = forms.BooleanField(required=False, label="ผู้ใช้ทั่วไป")
+    is_manager = forms.BooleanField(required=False, label="ผู้จัดการระบบ")
+    is_admin = forms.BooleanField(required=False, label="ผู้ดูแลระบบ")
 
+    class Meta:
+        model = MyUser
+        fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 'is_general', 'is_manager', 'is_admin',
+                  )
+        
+           
 class UserLoginForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(
@@ -37,45 +48,6 @@ class UserLoginForm(forms.Form):
         )
     )
 
-
-
-
-# class UserRegistrationForm(forms.Form):
-#     username = forms.CharField(
-#         widget=forms.TextInput(
-#             attrs={'class': 'form-control', 'placeholder': 'Username (ตัวอักษรอังกฤษ)'}
-#         )
-#     )
-#     email = forms.EmailField(
-#         widget=forms.EmailInput(
-#             attrs={'class': 'form-control', 'placeholder': 'Email'}
-#         )
-#     )
-#     first_name = forms.CharField(
-#         widget=forms.TextInput(
-#             attrs={'class': 'form-control', 'placeholder': 'ชื่อ'}
-#         )
-#     )
-#     last_name = forms.CharField(
-#         widget=forms.TextInput(
-#             attrs={'class': 'form-control', 'placeholder': 'นามสกุล'}
-#         )
-#     )
-#     position = forms.CharField(
-#         widget=forms.TextInput(
-#             attrs={'class': 'form-control', 'placeholder': 'ตำแหน่งงาน'}
-#         )
-#     )
-#     password1 = forms.CharField(
-#         widget=forms.PasswordInput(
-#             attrs={'class': 'form-control', 'placeholder': 'รหัสผ่าน'}
-#         )
-#     )
-#     password2 = forms.CharField(
-#         widget=forms.PasswordInput(
-#             attrs={'class': 'form-control', 'placeholder': 'รหัสผ่านยืนยัน'}
-#         )
-#     )
 
 class ManagerLoginForm(forms.Form):
     username = forms.CharField(
@@ -93,35 +65,34 @@ class ManagerLoginForm(forms.Form):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = MyUser
-        fields = ('email', 'first_name', 'last_name', )
+        fields = ('username', 'email', 'first_name', 'last_name', )
         labels = {
+            'username' : 'Username',
             'email': 'อีเมล',
             'first_name' : 'ชื่อ',
             'last_name' : 'นามสกุล',
         }
         widgets = {
+            'username' : forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
             'email' : forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
             'first_name' : forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
             'last_name' : forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
         }
-
-# CHOICE = [
-#     ('female', 'หญิง'),
-#     ('maie','ชาย'),
-# ]
 
 class ExtendedProfileForm(forms.ModelForm):
     prefix = 'extended'
 
     class Meta:
         model = Profile
-        fields = ('gender', 'position', 'work_group',  'phone','img' )
+        fields = ('gender', 'position', 'work_group', 'phone', 'img' )
         labels = {
             'gender': 'เพศ',
-            'work_group': 'หน่วยงาน'
+            'position' : 'หน่วยงาน',
+            'work_group': 'กลุ่มงาน',
+            'phone' : 'โทรศัพท์',
+            'img' : 'รูปโปรไฟล์'
         }
         widgets = {
-            # 'gender': forms.RadioSelect(choices=CHOICE),
             'gender': forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
             'position': forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
             'work_group': forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),

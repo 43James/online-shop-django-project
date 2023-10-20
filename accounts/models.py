@@ -57,6 +57,8 @@ class MyUser(AbstractUser):
     def __str__(self):
         return self.username 
     
+    def get_likes_count(self):
+        return self.likes.count()
 
 class Profile(models.Model):
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE)

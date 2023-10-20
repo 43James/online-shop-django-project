@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm
 
 from shop.models import Product, Category, Subcategory
+from orders.models import OrderItem, Order
 
 
 class AddProductForm(ModelForm):
@@ -40,3 +41,8 @@ class EditProductForm(ModelForm):
         super(EditProductForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+class ApproveForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = ('status', 'date_receive', 'return_status')

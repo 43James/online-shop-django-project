@@ -38,12 +38,12 @@ class Product(models.Model):
     category = models.ForeignKey(Subcategory, on_delete=models.CASCADE, related_name='Subcategory', null=True, blank=True, verbose_name='หมวดหมู่')
     image = models.ImageField(upload_to='products', verbose_name='รูปภาพ')
     code = models.CharField(max_length=50, unique=True, verbose_name='เลขพัสดุ/ครุภัณฑ์')
-    title = models.CharField(max_length=250, verbose_name='รายการวัสดุ')
+    slug = models.SlugField(max_length=300, unique=True)
+    title = models.CharField(max_length=250, verbose_name='ชื่อรายการ')
     description = models.TextField(verbose_name='อื่นๆ')
     number = models.IntegerField(default=0, null=True, verbose_name='จำนวน')
-    price = models.FloatField(default=0, verbose_name='ราคา')
+    price = models.IntegerField(verbose_name='ราคา')
     date_created = models.DateTimeField(auto_now_add=True)
-    slug = models.SlugField(unique=True)
 
     class Meta:
         ordering = ('-id',)
@@ -55,5 +55,5 @@ class Product(models.Model):
         return reverse('shop:product_detail', kwargs={'slug':self.slug})
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        self.slug = slugify(self.code)
         return super().save(*args, **kwargs)

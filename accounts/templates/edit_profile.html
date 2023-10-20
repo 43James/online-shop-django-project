@@ -2,21 +2,67 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="col-md-6">
-        <form  method="POST">
-            {% csrf_token %}
-            <h3>Edit Profile</h3>
-            <hr>
-            <!-- {{ form|crispy  }} -->
-            {{ form.non_field_errors }}
-            {{ form.as_p }}
-            {{ extended_form.as_p }}
-            <div class="form-group">
-                <button class="btn btn-primary mt-3 w-100" type="submit">Update</button>
-            </div>
-        </form>
+<div class="col-md-6 container justify-content-center">
+    <!-- <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3>Edit Profile</h3>
+        <hr>
+        {{ form|crispy  }}
+        {{ form.non_field_errors }}
+        {{ form.as_p }}
+        {{ extended_form.as_p }}
 
+        <div class="form-group">
+            <button class="btn btn-primary mt-2 mb-3 w-100" type="submit">Update</button>
+        </div>
+    </form> -->
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
         
+        <!-- Display form errors -->
+        {% if form.errors %}
+            <ul>
+                {% for error in form.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        {{ form.as_p }}
+        {{ extended_form.as_p }}
+        
+        
+        <!-- User Profile Form Fields -->
+        <!-- {{ form.username.label_tag }} {{ form.username }}
+        {{ form.first_name.label_tag }} {{ form.first_name }}
+        {{ form.last_name.label_tag }} {{ form.last_name }}
+        {{ form.email.label_tag }} {{ form.email }} -->
+        
+        <!-- Extended Profile Form Fields -->
+        <!-- {{ extended_form.gender.label_tag }} {{ extended_form.gender }}
+        {{ extended_form.work_group.label_tag }} {{ extended_form.work_group }}
+        {{ extended_form.position.label_tag }} {{ extended_form.position }}
+        {{ extended_form.phone.label_tag }} {{ extended_form.phone }}
+        {{ extended_form.img.label_tag }} {{ extended_form.img }} -->
+        <div>
+            {% if img %}
+            <p>ไม่มีรูปภาพ</p>
+            {% else %}
+            {{ user.profile.image }}
+            {% endif %}
+        </div>
+        
+        <!-- Submit Button -->
+        <!-- <input type="submit" value="Save Profile"> -->
+        <div class="form-group">
+            <button class="btn btn-primary mt-2 mb-3 w-100" type="submit">Update</button>
+        </div>
+    </form>
+
+    <!-- Display User Profile Image -->
+    <!-- {{ user.profile.image }} -->
     
-    </div>
+
+</div>
 {% endblock %}

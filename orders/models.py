@@ -8,15 +8,18 @@ class Order(models.Model):
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='orders')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    status = models.BooleanField(default=None, verbose_name="สถานะ")
-    date_receive = models.DateTimeField(verbose_name='วันที่รับของ')
-    return_status = models.BooleanField(default=None, verbose_name="สถานะการคืน")
+    status = models.BooleanField(default=False, verbose_name="สถานะ")
+    date_receive = models.DateTimeField(null=True, verbose_name='วันที่รับของ')
+    return_status = models.BooleanField(default=False, verbose_name="สถานะการคืน")
 
     class Meta:
         ordering = ('-id',)
-
+    
     def __str__(self):
-        return f"{self.user.full_name} - order id: {self.id}"
+        return str(self.id)
+
+    # def __str__(self):
+    #     return f"{self.user.full_name} - order id: {self.id}"
 
     @property
     def get_total_price(self):

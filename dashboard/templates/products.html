@@ -20,11 +20,12 @@
     <tbody>
       <tr>
         <th scope="row">{{ forloop.counter }}</th>
-        <td>${{ product.code }}</td>
-        <td><a class="text-decoration-none" href="{{ product.get_absolute_url }}">{{ product.title }}</a></td>
+        <td><a class="text-decoration-none" href="{{ product.get_absolute_url }}">{{ product.code }}</a></td>
+        <!-- <td><a class="text-decoration-none" href="{% url 'shop:product_detail' product.id %}">{{ product.code }}</a></td> -->
         <td>{{ product.category }}</td>
-        <td>${{ product.price }}</td>
-        <td>${{ product.number }}</td>
+        <td>{{ product.title }}</td>
+        <td>{{ product.price }} ฿</td>
+        <td>{{ product.number }} ชิ้น</td>
         <td>{{ product.date_created|date:"M d" }}</td>
         <td><a class="text-danger text-decoration-none" href="{% url 'dashboard:delete_product' product.id %}">Delete</a></td>
         <td><a class="text-info text-decoration-none" href="{% url 'dashboard:edit_product' product.id %}">Edit</a></td>

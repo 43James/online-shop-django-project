@@ -1,0 +1,80 @@
+{% extends "dashboard.html" %}
+{% block content %}
+
+
+  <div class="col-9 justify-content-center container ">
+    <!-- <h3 class="content-title" style="text-align: center; font-weight: bold;">แก้ไขข้อมูลสมาชิก</h3> -->
+
+    <hr style="height: 3px; color: #000;">
+
+    <form action="" method="POST">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="id_first_name" class="form-label"><strong>ชื่อ</strong></label>
+          <input type="text" value="{{ my.first_name }}" name="first_name" class="form-control" required id="id_first_name">
+          {{ form.first_name.errors }}
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="id_last_name" class="form-label"><strong>นามสกุล</strong></label>
+          <input type="text" value="{{ my.last_name }}" name="last_name" class="form-control" required id="id_last_name">
+          {{ form.last_name.errors }}
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="id_username" class="form-label"><strong>Username</strong></label>
+        <input type="text" value="{{ my.username }}" name="username" class="form-control" required id="id_username">
+        {{ form.username.errors }}
+      </div>
+      
+      <div class="mb-3">
+        <label for="id_password1" class="form-label"><strong>รหัสผ่าน</strong></label>
+        <input type="password" value="{{ my.password1 }}" name="password1" class="form-control"  id="id_password1">
+        
+      </div>
+
+      <div class="mb-3">
+        <label for="id_password2" class="form-label"><strong>รหัสผ่านยืนยัน</strong></label>
+        <input type="password" value="{{ my.password2 }}" name="password2" class="form-control"  id="id_password2">
+        
+      </div>
+      
+      <div class="mb-3">
+        <label for="id_email" class="form-label"><strong>Email</strong></label>
+        <input type="email" value="{{ my.email }}" name="email" class="form-control" required id="id_email">
+        {{ form.email.errors }}
+      </div>
+
+      <div class="form-row field-is_general mb-2">
+        <div class="checkbox-row">
+          <input type="checkbox" value="{{ my.is_general }}" {% if my.is_active == my.is_general %} checked {% endif %} name="is_general" 
+          ><label class="vCheckboxLabel" for="id_is_general"></label> <strong> ผู้ใช้งาน</strong>
+        </div>
+      </div>
+
+      <div class="form-row field-is_manager mb-2">
+        <div class="checkbox-row">
+          <input type="checkbox" value="{{ my.is_manager }}" {% if my.is_active == my.is_manager %} checked {% endif %} name="is_manager" 
+          ><label class="vCheckboxLabel" for="id_is_manager"></label> <strong> ผู้จัดการระบบ</strong>
+        </div>
+      </div>
+
+      <div class="form-row field-is_admin mb-2">        
+        <div class="checkbox-row">
+          <input type="checkbox" value="{{ my.is_admin }}" {% if my.is_active == my.is_admin %} checked {% endif %} name="is_admin" 
+          ><label class="vCheckboxLabel" for="id_is_admin"></label> <strong> แอดมิน</strong>
+        </div>
+      </div>
+
+      <div class="container-fluid justify-content-center d-flex mt-4">
+        <a onclick="history.back()" class="btn btn-danger mr-3" style="margin-right: 20px;">ย้อนกลับ</a>
+        <button class="btn btn-primary" type="submit">บันทึกการแก้ไข</button>
+      </div>
+    </form>
+  </div>
+
+{% endblock %}

@@ -20,6 +20,7 @@ def create_order(request):
     return redirect('orders:pay_order', order_id=order.id)
 
 
+
 @login_required
 def checkout(request, order_id):
     order = get_object_or_404(Order, id=order_id)

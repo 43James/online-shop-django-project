@@ -1,21 +1,83 @@
-{% extends "base.html" %}
+{% extends "dashboard.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="col-md-6">
-        <form method="POST">
-            {% csrf_token %}
-            <h3>Create Account</h3>
-            <hr>
-            <!-- {{ form|crispy }} -->
-            {{ form.as_p }}
-            <div class="form-group">
-                <button class="btn btn-primary w-100 mt-2" type="submit">Submit</button>
-            </div>
-        </form>
-        <div class="mt-3">
+<div class="col-9 justify-content-center container">
+  <form method="POST">
+    {% csrf_token %}
+    <!-- <h3>Create Account</h3> -->
+    <!-- <hr> -->
+    <!-- {{ form|crispy }} -->
+    <!-- {{ form.as_p }} -->
+
+    {{ form.non_field_errors }}
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label"><strong>ชื่อ</strong></label>
+        <input type="text" name="first_name" class="form-control" required>
+        {{ form.first_name.errors }}
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label"><strong>นามสกุล</strong></label>
+        <input type="text" name="last_name" class="form-control" required>
+        {{ form.last_name.errors }}
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label"><strong>Username</strong></label>
+      <input type="text" name="username" class="form-control" required>
+      {{ form.username.errors }}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label"><strong>Email</strong></label>
+      <input type="email" name="email" class="form-control" required>
+      {{ form.email.errors }}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label"><strong>รหัสผ่าน</strong></label>
+      <input type="password" name="password1" class="form-control">
+      {{ form.email.errors }}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label"><strong>รหัสผ่านยืนยัน</strong></label>
+      <input type="password" name="password2" class="form-control">
+      {{ form.email.errors }}
+    </div>
+
+    <div class="form-row field-is_general mb-2">
+      <div class="checkbox-row">
+        <input type="checkbox" name="is_general">
+        <label class="vCheckboxLabel"></label> <strong> ผู้ใช้งาน</strong>
+      </div>
+    </div>
+
+    <div class="form-row field-is_manager mb-2">
+      <div class="checkbox-row">
+        <input type="checkbox" name="is_manager">
+        <label class="vCheckboxLabel"></label> <strong> ผู้จัดการระบบ</strong>
+      </div>
+    </div>
+
+    <div class="form-row field-is_admin mb-2">
+      <div class="checkbox-row">
+        <input type="checkbox" name="is_admin">
+        <label class="vCheckboxLabel"></label> <strong> แอดมิน</strong>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button class="btn btn-primary w-100 mt-2 mb-3" type="submit">Submit</button>
+    </div>
+  </form>
+  <!-- <div class="mt-3">
             <small class="text-muted">
                 Already have an account? <a href="{% url 'accounts:user_login' %}">Login</a>
             </small>
-        </div>
-    </div>
+        </div> -->
+</div>
 {% endblock %}

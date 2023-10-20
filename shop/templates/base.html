@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
 <head>
   <meta charset="UTF-8">
@@ -11,6 +11,7 @@
   <!-- bootstrap css cdn -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <title>{% if title %} {{ title }} {% else %} Django Online Shop {% endif %}</title>
 </head>
 
@@ -22,14 +23,12 @@
         {% if request.user.is_authenticated %}
         <b class="text-primary">{{ cart_count }}</b>
         {% endif %}
-        <a href="{% url 'cart:show_cart' %}" class="text-primary mt-2 me-2"><i
-            class="material-icons h3">&#xe8cc;</i></a>
+        <a href="{% url 'cart:show_cart' %}" class="text-primary mt-2 me-2"><i class="material-icons h3">&#xe8cc;</i></a>
         <!-- favorite icon -->
         {% if request.user.is_authenticated %}
-        <b class="text-primary">{{ request.user.get_likes_count}}</b>
+        <b class="text-primary">{{ request.user.get_likes_count }}</b>
         {% endif %}
-        <a href="{% url 'shop:favorites' %}" class="text-primary mt-2 me-2"><i
-            class="material-icons h3">&#xe87d;</i></a>
+        <a href="{% url 'shop:favorites' %}" class="text-primary mt-2 me-2"><i class="material-icons h3">&#xe87d;</i></a>
         <!-- Menu -->
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="{% url 'shop:home_page' %}" class="nav-link px-2 text-dark">Home</a></li>
@@ -53,6 +52,7 @@
               {% endfor %}
             </ul>
           </div>
+        <!-- favorite icon -->
           <li><a href="#" class="nav-link px-2 text-dark">FAQs</a></li>
           <li><a href="#" class="nav-link px-2 text-dark">About</a></li>
         </ul>
@@ -67,11 +67,12 @@
           <a href="#" class="btn btn-primary text-white me-4 d-block link-dark text-decoration-none dropdown-toggle"
             id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">MEMU</a>
           <ul class="dropdown-menu" aria-labelledby="dropdownUser1">
-            <li><a href="{% url 'cart:show_cart' %}" <a class="dropdown-item">Cart</a></li>
-            <li><a href="{% url 'shop:favorites' %}" <a class="dropdown-item">Favorites</a></li>
-            <li><a href="{% url 'orders:user_orders' %}" <a class="dropdown-item">Orders</a></li>
-            <li><a class="dropdown-item" href="{% url 'accounts:edit_profile' %}">Edit Profile</a></li>
-            <li><a class="dropdown-item text-danger" href="{% url 'accounts:user_logout' %}">Sign out</a></li>
+        <li><a href="{% url 'cart:show_cart' %}" <a class="dropdown-item"><i class="bi bi-cart-fill"></i> รถเข็น <b class="text-primary">{{ cart_count }}</b></a></li>
+            <li><a href="{% url 'shop:favorites' %}" <a class="dropdown-item"><i class="bi bi-heart-fill"></i> รายการโปรด <b class="text-primary">{{ request.user.get_likes_count }}</b></a></li>
+            <li><a href="{% url 'orders:user_orders' %}" <a class="dropdown-item"><i class="bi bi-bag-fill"></i> คำสั่งซื้อ</a></li>
+            <li><a class="dropdown-item" href="{% url 'accounts:user_profile_detail' user.username %}"><i class="bi bi-person-lines-fill"></i> ดูโปรไฟล์</a></li>
+            <li><a class="dropdown-item" href="{% url 'accounts:edit_profile' %}"><i class="bi bi-person-fill-gear"></i> แก้ไขโปรไฟล์</a></li>
+            <li><a class="dropdown-item text-danger" href="{% url 'accounts:user_logout' %}"><i class="bi bi-box-arrow-right"></i> Sign out</a></li>
           </ul>
         </div>
         <div class="row"
@@ -79,7 +80,7 @@
           font-size: 14px; background:rgb(58, 82, 114); padding: 0.5em; border-radius: 8px; font-weight:bold; color:rgb(255, 255, 255);">
           <div class="col">
             {% if user.profile %}
-            <img src="{{ user.profile.img.url }}" style="max-height: 25px; border-radius: 50%;">
+            <img src="{{ user.profile.img.url }}" style="max-height: 25px; border-radius: 50%; width: 25px; height: 25px;">
             {% else %}
             <img src="https://i.pinimg.com/564x/5e/57/c8/5e57c8344039bc815bd95d8b6abec92d.jpg" style="max-height: 25px; border-radius: 50%;">
             {% endif %}
@@ -94,7 +95,7 @@
         <!-- login, sign-up btn -->
         <div class="text-end">
           <a href="{% url 'accounts:user_login' %}" class="btn btn-outline-primary me-2">Login</a>
-          <a href="{% url 'accounts:user_register' %}" class="btn btn-primary">Sign-up</a>
+          <!-- <a href="{% url 'accounts:user_register' %}" class="btn btn-primary">Sign-up</a> -->
         </div>
         {% endif %}
       </div>
@@ -103,11 +104,27 @@
   <main class="container">
     <div class="row mt-3">
       <!-- messages -->
-      {% if messages %}
+      <!-- {% if messages %}
       {% for message in messages %}
       <div class="alert alert-{{ message.tags }}">{{ message }}</div>
       {% endfor %}
-      {% endif %}
+      {% endif %} -->
+      
+        <!-- messages -->
+        {% if messages %}
+        <div class="messages justify-content-center">
+            {% for message in messages %}
+            {% if 'error' in message.tags %} <ul class="alert alert-danger text-center"><h6>{{ message }}</h6></ul> {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if messages %}
+        <div class=" messages justify-content-center">
+            {% for message in messages %}
+            {% if 'success' in message.tags %} <ul class="alert alert-success text-center"><h6>{{ message }}</h6></ul> {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
       <!-- content -->
       {% block content %}{% endblock %}
     </div>
@@ -116,6 +133,18 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+        window.setTimeout(function () {
+            $(".alert").fadeTo(1000, 0).slideUp(1000, function () {
+                $(this).remove();
+            });
+        }, 1500);
+
+    });
+  </script>
 </body>
 
 </html>

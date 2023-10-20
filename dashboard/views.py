@@ -3,11 +3,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404
-
+from django.core.paginator import Paginator
 from shop.models import Product
 from accounts.models import MyUser
 from orders.models import Order, OrderItem
-from .forms import AddProductForm, AddCategoryForm, AddSubcategoryForm, EditProductForm
+from .forms import AddProductForm, AddCategoryForm, AddSubcategoryForm, EditProductForm, ApproveForm
 
 
 def is_manager(user):
@@ -102,6 +102,27 @@ def orders(request):
     context = {'title':'Orders', 'orders':orders}
     return render(request, 'orders.html', context)
 
+@login_required
+def approve_orders(request, id):
+    ap = Order.objects.get(id = id)
+    form = ApproveForm()
+    
+    if request.method == 'POST':
+        form = ApproveForm(request.POST, instance = ap)
+
+        if form.is_valid():
+            form.save()
+            id=form.instance.id
+            messages.success(request, 'ดำเนินการสำเร็จ')
+            return redirect('dashboard:orders')
+        else :
+            messages.error(request, 'ดำเนินการไม่สำเร็จ')
+            
+    return render(request, 'orders.html', {
+        'ap':ap,
+        'form': form,
+        'title' : 'แก้ไขข้อมูลสมาชิก'
+    })
 
 @user_passes_test(is_manager)
 @login_required
@@ -110,3 +131,4 @@ def order_detail(request, id):
     items = OrderItem.objects.filter(order=order).all()
     context = {'title':'order detail', 'items':items, 'order':order}
     return render(request, 'order_detail.html', context)
+
