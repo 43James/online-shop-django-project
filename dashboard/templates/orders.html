@@ -1,102 +1,137 @@
 {% extends "dashboard.html" %}
 {% block content %}
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">User</th>
-      <th scope="col">Id</th>
-      <th scope="col">ยอดรวม</th>
-      <th scope="col">สถานะการอนุมัติ</th>
-      <th scope="col">วันที่รับของ</th>
-      <th scope="col">สถานะการคืน</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  {% for order in orders %}
-  <tbody>
-    <tr>
-      <th scope="row">{{ forloop.counter }}</th>
-      <td>{{ order.user.username }}</td>
-      <td>{{ order.id }}</td>
-      <td>{{ order.get_total_price }} ฿</td>
+<div class="table-responsive">
+  <table class="table">
+    <thead class="text-muted">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">User</th>
+        <th scope="col">ID</th>
+        <th scope="col">ยอดรวม</th>
+        <th scope="col">สถานะ</th>
+        <th scope="col">ทำรายการ</th>
+        <th scope="col">รายละเอียด</th>
+        <th scope="col">วันที่รับของ</th>
+        <!-- <th scope="col">สถานะการคืน</th> -->
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    {% for order in orders %}
+    <tbody>
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td scope="row">{{ order.user.username }}</td>
+        <td scope="row">{{ order.id }}</td>
+        <td scope="row">{{ order.get_total_price }} ฿</td>
 
-      {% if order.status %}
-          <td class="text-success">อนุมัติ</td>
-      {% else %}
-          <td class="text-warning">รอดำเนินการ..</td>
-      {% endif %}
 
-      <td>{{ order.date_receive }}</td>
+        {% if order.status %}
+        <td scope="row" class="text-success">อนุมัติ</td>
+        {% elif order.refuse %}
+        <td scope="row" class="text-danger">ปฏิเสธ</td>
+        {% else %}
+        <td scope="row" class="text-warning">รอดำเนินการ..</td>
+        {% endif %}
 
-      {% if order.return_status %}
-          <td class="text-success">ไม่ต้องคืน</td>
-      {% else %}
-          <td class="text-warning">รอดำเนินการ..</td>
-      {% endif %}
-      <!-- <td class="text-success"></td> -->
-      
-      <td><!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          ดำเนินการ {{ order.id }}
-        </button>
-        
+        <td scope="col"><!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+            data-bs-target="#exampleModal{{ order.id }}">
+            ดำเนินการ
+          </button>
+        </td>
+
         <!-- Modal -->
-      <form action="{% url 'dashboard:approve_orders' order.id %}" method="post">
-        {% csrf_token %}
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">ดำเนินการ</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="status" id="flexRadioDefault1">
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    อนุมัติ
-                  </label>
+        <form action="{% url 'dashboard:approve_orders' order.id %}" method="POST">
+          {% csrf_token %}
+          <div class="modal fade" id="exampleModal{{ order.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content" style="width: 15rem;">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">ดำเนินการ ID {{ order.id }}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <!-- <div class="form-check mb-3">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    ปฏิเสธ
-                  </label>
-                </div><br> -->
-                <div class="mb-3 mt-3">
-                  <label for="exampleFormControlInput1" class="form-label">วันที่รับของ</label>
-                  <input type="datetime-local" name="date_receive" class="form-control" id="exampleFormControlInput1" >
+                <div class="modal-body">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="status" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                      อนุมัติ
+                    </label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="refuse" id="flexCheckChecked">
+                    <label class="form-check-label" for="flexCheckChecked">
+                      ปฏิเสธ
+                    </label>
+                  </div>
+
+                  <div class="col mb-3 mt-3">
+                    <label for="exampleFormControlInput1" class="form-label">วันที่รับของ</label>
+                    <input type="datetime-local" name="date_receive" value="{{ ap.date_receive }}" class="form-control"
+                      id="exampleFormControlInput1">
+                  </div>
                 </div>
-                
-                <label for="exampleFormControlInput1" class="form-label">สถานะการคืน</label>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="return_status" id="flexRadioDefault1">
-                  <label class="form-check-label" for="flexRadioDefault1">
-                    กรุณาคืน
-                  </label>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
                 </div>
-                <div class="form-check mb-3">
-                  <input class="form-check-input" type="radio" name="return_status" id="flexRadioDefault2" checked>
-                  <label class="form-check-label" for="flexRadioDefault2">
-                    ไม่ต้องคืน
-                  </label>
-                </div><br>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
               </div>
             </div>
           </div>
-        </div></td>
-      <td><a href="{% url 'dashboard:order_detail' order.id %}" class="text-primary text-decoration-none">Detail</a></td>
-    </tr>
-  </tbody>
-</form>
-  {% endfor %}
-</table>
-  
+        </form>
 
+        <td><a href="{% url 'dashboard:order_detail' order.id %}" class="text-primary text-decoration-none">Detail</a>
+        </td>
+        <td scope="row">{{ order.date_receive }}</td>
+      </tr>
+    </tbody>
+    {% endfor %}
+  </table>
+</div>
 {% endblock %}
+<div class="modal fade" id="exampleModal{{ order.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="content col-md-6 rounded" style="background-color: white;">
 
+      <div class="modal-header">
+        <h5 class="modal-title text-center container" id="exampleModalLabel">ดำเนินการ ID {{ order.id }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="status" id="flexRadioDefault1">
+          <label class="form-check-label" for="flexRadioDefault1">
+            อนุมัติ
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="refuse" id="flexRadioDefault2">
+          <label class="form-check-label" for="flexRadioDefault2">
+            ปฏิเสธ
+          </label>
+        </div>
+
+        <div class="col mb-3 mt-3">
+          <label for="exampleFormControlInput1" class="form-label">วันที่รับของ</label>
+          <input type="datetime-local" name="date_receive" class="form-control" id="exampleFormControlInput1">
+        </div>
+
+        <!-- <label for="exampleFormControlInput1" class="form-label">สถานะการคืน</label> -->
+        <!-- <div class="form-check">
+              <input class="form-check-input" type="radio" value="{{ ap.return_status }}" {% if ap.return_status == false %} checked {% endif %} name="return_status" id="flexRadioDefault1">
+              <label class="form-check-label" for="flexRadioDefault1">
+                กรุณาคืน
+              </label>
+            </div> -->
+
+
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>

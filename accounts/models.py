@@ -5,43 +5,6 @@ from django.contrib.auth.models import AbstractUser
 from shop.models import Product
 from django.utils.html import format_html
 
-# class User(AbstractBaseUser):
-#     username = models.CharField(max_length=20)
-#     # username = None
-#     email = models.EmailField(max_length=100, unique=True)
-#     full_name = models.CharField(max_length=100)    
-#     is_active = models.BooleanField(default=True)
-#     # set a manager role for shop manager to access orders and products
-#     is_manager = models.BooleanField(default=False)
-#     # set a admin role for shop manager to access orders and products
-#     is_admin = models.BooleanField(default=False)
-#     likes = models.ManyToManyField(Product, blank=True, related_name='likes')
-        
-#     objects = UserManager()
-
-#     USERNAME_FIELD = 'email'
-#     REQUIRED_FIELDS = ['full_name']
-
-
-#     def __str__(self):
-#         return self.username
-
-#     def has_perm(self, perm, obj=None):
-#         return True
-
-#     def has_module_perms(self, app_label):
-#         return True
-
-#     @property
-#     def is_staff(self):
-#         return self.is_admin
-
-#     def get_likes_count(self):
-#         return self.likes.count()
-    
-#     class Meta:
-#         ordering = ['-id']
-
 
 class MyUser(AbstractUser):
     email = models.EmailField(max_length=100, verbose_name="อีเมล", unique=True)

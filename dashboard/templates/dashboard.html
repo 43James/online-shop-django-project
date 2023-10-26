@@ -39,7 +39,7 @@
         <!-- sidebar -->
         <div class="col-md-3 border-start">
             <h4 class="text-muted">Menu จัดการวัสดุ</h4>
-            <a class="text-decoration-none" href="#">
+            <a class="text-decoration-none" href="{% url 'dashboard:dashboard_home' %}">
                 <li class="rounded list-group-item mt-2  text-primary">Dashboard</li>
             </a>
             <a class="text-decoration-none" href="{% url 'dashboard:products' %}">
@@ -81,8 +81,9 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                   <li><a class="dropdown-item" href="{% url 'accounts:user_register' %}">Add user</a></li>
-                  <li><a class="dropdown-item" href="{% url 'accounts:manage_user' %}">Manage users</a></li>
-                  <li><a class="dropdown-item" href="{% url 'accounts:edit_profile' %}">Manager profile </a></li>
+                  <li><a class="dropdown-item" href="{% url 'accounts:manage_user'  %}">Manage users</a></li>
+                  <li><a class="dropdown-item" href="{% url 'accounts:user_profile_detail' user.username %}">Profile </a></li>
+                  <li><a class="dropdown-item" href="{% url 'accounts:edit_profile' %}">Update profile </a></li>
                 </ul>
             </div>
             <!-- <a class="text-decoration-none" href="{% url 'accounts:user_register' %}">

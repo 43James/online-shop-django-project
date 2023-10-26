@@ -10,18 +10,40 @@
   <body>
     <main class="container">
       <div class="row mt-5 text-capitalize">
+        <!-- messages -->
+      {% if messages %}
+      <div class="messages justify-content-center">
+          {% for message in messages %}
+          {% if 'error' in message.tags %} <ul class="alert alert-danger text-center"><h6>{{ message }}</h6></ul> {% endif %}
+          {% endfor %}
+      </div>
+      {% endif %}
         <div class="col-md-4"></div>
         <div class="col-md-4">
           <form method="post" class="mt-5 pt-5">
             {% csrf_token %}
-            <h2>Dashboard</h2>
+            <h2 class="text-center">Dashboard</h2>
+            <hr>
             {{ form }}
-            <button class="w-100 btn btn-primary mt-3" type="submit">Sign In</button>
+            <button class="w-100 btn btn-primary mt-4" type="submit">Sign In</button>
           </form>
-          <p class="text-muted mt-3"><a href="{% url 'shop:home_page' %}">Back to shop</a></p>
+          <hr>
+          <p class="text-muted mt-3"><a href="{% url 'accounts:user_login' %}">Back to shop</a></p>
         </div>
         <div class="col-md-4"></div>
       </div>
     </main>
   </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+        window.setTimeout(function () {
+            $(".alert").fadeTo(1000, 0).slideUp(1000, function () {
+                $(this).remove();
+            });
+        }, 1500);
+
+    });
+  </script>
 </html>

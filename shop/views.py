@@ -18,13 +18,13 @@ def paginat(request, list_objects):
 		page_obj = p.page(p.num_pages)
 	return page_obj
 
-
+@login_required
 def home_page(request):
 	products = Product.objects.all()
 	context = {'products': paginat(request ,products)}
 	return render(request, 'home_page.html', context)
 
-
+@login_required
 def product_detail(request, slug):
 	form = QuantityForm()
 	product = get_object_or_404(Product, slug=slug)
@@ -61,14 +61,14 @@ def favorites(request):
 	context = {'title':'Favorites', 'products':products}
 	return render(request, 'favorites.html', context)
 
-
+@login_required
 def search(request):
 	query = request.GET.get('q')
 	products = Product.objects.filter(title__icontains=query).all()
 	context = {'products': paginat(request ,products)}
 	return render(request, 'home_page.html', context)
 
-
+@login_required
 def filter_by_category(request, slug):
 	"""when user clicks on parent category
 	we want to show all products in its sub-categories too

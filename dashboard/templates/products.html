@@ -1,7 +1,7 @@
 {% extends "dashboard.html" %}
 
 {% block content %}
-
+<div class="table-responsive">
 <table class="table table-striped ">
     <thead class="text-muted">
         <tr>
@@ -11,7 +11,7 @@
             <th scope="col">ชื่อรายการ</th>
             <th scope="col">ราคา</th>
             <th scope="col">จำนวน</th>
-            <th scope="col">date</th>
+            <th scope="col">วันที่เพิ่ม</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
@@ -26,12 +26,12 @@
         <td>{{ product.title }}</td>
         <td>{{ product.price }} ฿</td>
         <td>{{ product.number }} ชิ้น</td>
-        <td>{{ product.date_created|date:"M d" }}</td>
+        <td>{{ product.date_created|date:"d M " }}</td>
         <td><a class="text-danger text-decoration-none" href="{% url 'dashboard:delete_product' product.id %}">Delete</a></td>
         <td><a class="text-info text-decoration-none" href="{% url 'dashboard:edit_product' product.id %}">Edit</a></td>
       </tr>
     </tbody>
     {% endfor %}
 </table>
-
+</div>
 {% endblock %}

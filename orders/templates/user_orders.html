@@ -10,26 +10,20 @@
 
     <!-- order payment status -->
     <div class="row">
-        <div class="col-md-6">
+        <div class="col">
             {% if order.status %}
             <h3><b class="text-success">ดำเนินการสำเร็จ <i class="bi bi-check-circle-fill"></i></b></h3>
+            <h5><b style="font-weight: bold;">วันที่รับของ : <i class="bi bi-calendar-check-fill text-primary"> {{ order.date_receive }}</i></b></h5>
+            {% elif order.refuse %}
+            <h3><b class="text-danger">ปฏิเสธคำร้อง <i class="bi bi-heartbreak-fill"></i></b></h3>
             {% else %}
             <h4><b class="text-warning">รอดำเนินการ..</b></h4>
-            {% endif %}
-        </div>
-
-        <div class="col-md-6 text-end fst-italic">
-            {% if order.return_status %}
-            <h5><b class="text-danger">ไม่ต้องคืนวัสดุ</b></h5>
-            {% else %}
-            <h5><b class="text-warning">รอดำเนินการ..</b></h5>
+            <h5><b style="font-weight: bold;">วันที่รับของ : <i class="bi bi-calendar-check-fill text-warning"> รอดำเนินการ</i></b></h5>
             {% endif %}
         </div>
     </div>
 
-    <div class="col" style="margin-left: 12px;">
-        <h5><b class="text-warning" style="font-weight: bold;">วันที่รับของ : {{ order.date_receive }}</b></h5>
-    </div>
+    
 
 
     <div class="text-muted border-top pt-2"></div>

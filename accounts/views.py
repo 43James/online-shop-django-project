@@ -11,20 +11,6 @@ from .forms import ExtendedProfileForm, UserRegistrationForm, UserLoginForm, Man
 from accounts.models import MyUser, Profile
 
 
-# def create_manager():
-#     """
-#     to execute once on startup:
-#     this function will call in online_shop/urls.py
-#     """
-#     if not MyUser.objects.filter(email="manager@example.com").first():
-#         user = MyUser.objects.create_user(
-#             "manager@example.com", 'shop manager' ,'managerpass1234'
-#         )
-#         # give this user manager role
-#         user.is_manager = True
-#         user.save()
-
-
 def manager_login(request):
     if request.method == 'POST':
         form = ManagerLoginForm(request.POST)
@@ -35,7 +21,7 @@ def manager_login(request):
             )
             if user is not None and user.is_manager and user.is_admin:
                 login(request, user)
-                return redirect('dashboard:products')
+                return redirect('dashboard:dashboard_home')
             else:
                 messages.error(
                     request, 'username or password is wrong', 'danger'
@@ -43,23 +29,8 @@ def manager_login(request):
                 return redirect('accounts:manager_login')
     else:
         form = ManagerLoginForm()
-    context = {'form': form}
+    context = { 'title':'LogIn','form': form}
     return render(request, 'manager_login.html', context)
-
-
-# def user_register(request):
-#     if request.method == 'POST':
-#         form = UserRegistrationForm(request.POST)
-#         if form.is_valid():
-#             data = form.cleaned_data
-#             MyUser = MyUser.objects.create_user(
-#                 data['username'], data['email'], data['first_name'], data['last_name'], data['position'], data['password']
-#             )
-#             return redirect('accounts:user_login')
-#     else:
-#         form = UserRegistrationForm()
-#     context = {'title':'Signup', 'form':form}
-#     return render(request, 'register.html', context)
 
 def user_register(request):
     if request.method == "POST":
@@ -78,7 +49,6 @@ def user_register(request):
     context = {'form':form,
                'title':'Create Account',}
     return render(request, 'register.html', context)
-
 
 
 def user_login(request):
@@ -106,18 +76,6 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('accounts:user_login')
-
-
-# def edit_profile(request):
-#     form = UserProfileForm(request.POST, instance=request.user)
-#     if form.is_valid():
-#         form.save()
-#         messages.success(request, 'Your profile has been updated', 'success')
-#         return redirect('accounts:edit_profile')
-#     else:
-#         form = UserProfileForm(instance=request.user)
-#     context = {'title':'Edit Profile', 'form':form}
-#     return render(request, 'edit_profile.html', context)
 
 
 def edit_profile (request):
@@ -163,25 +121,14 @@ def edit_profile (request):
     }
     return render(request, 'edit_profile.html', context)
 
+
 def user_profile_detail(request, username):
     try:
         obj = 1
         user = MyUser.objects.get(username = username)
         profile = Profile.objects.get(user_id=user.id)
 
-        # dob = profile.dob
-        # dobSplit = dob.split("-")
-        # dobYear = dobSplit[0]
-        # dobDay = dobSplit[2]
-        # dobMonth = dobSplit[1]
-        
-        # mo = int(dobMonth)
-        # month_name = 'x มกราคม กุมภาพันธ์ มีนาคม เมษายน พฤษภาคม มิถุนายน กรกฎาคม สิงหาคม กันยายน ตุลาคม พฤศจิกายน ธันวาคม'.split()[mo]
-        # thai_year = int(dobYear) + 543
-        # x = ("%d %s %d"%(int(dobDay), month_name, thai_year))
-
     except:
-        # x = 1
         obj = 2
         profile = 'คุณยังไม่ได้เพิ่มข้อมูลโปรไฟล์'
         

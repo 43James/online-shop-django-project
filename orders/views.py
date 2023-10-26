@@ -33,7 +33,7 @@ def fake_payment(request, order_id):
     cart = Cart(request)
     cart.clear()
     order = get_object_or_404(Order, id=order_id)
-    order.status = True
+    # order.status = False
     order.save()
     return redirect('orders:user_orders')
 

@@ -15,24 +15,6 @@ class Subcategory(models.Model):
     def __str__(self):
         return self.name
     
-# class Category(models.Model):
-#     title = models.CharField(max_length=200)
-#     sub_category = models.ForeignKey(
-#         'self', on_delete=models.CASCADE,
-#         related_name='sub_categories', null=True, blank=True
-#     )
-#     is_sub = models.BooleanField(default=False)
-#     slug = models.SlugField(max_length=200, unique=True)
-
-#     def __str__(self):
-#         return self.title
-
-#     def get_absolute_url(self):
-#         return reverse('shop:product_detail', kwargs={'slug':self.slug})
-
-#     def save(self, *args, **kwargs): # new
-#         self.slug = slugify(self.title)
-#         return super().save(*args, **kwargs)
         
 class Product(models.Model):
     category = models.ForeignKey(Subcategory, on_delete=models.CASCADE, related_name='Subcategory', null=True, blank=True, verbose_name='หมวดหมู่')

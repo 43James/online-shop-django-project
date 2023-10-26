@@ -2,9 +2,9 @@
 
 {% block content %}
 {% if order.status %}
-    <h4><b class="text-success">Successful</b></h4>
+    <h4><b class="text-success">ดำเนินการสำเร็จ</b></h4>
 {% else %}
-    <h3><b class="text-danger">Cancelled</b></h3>
+    <h3><b class="text-warning">รอดำเนินการ</b></h3>
 {% endif %}
 {% for item in items  %}
 <div class="bg-light rounded border-bottom p-3">

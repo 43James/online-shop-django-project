@@ -39,12 +39,12 @@ class UserEditForm(UserCreationForm):
 class UserLoginForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'Username'}
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Username'}
         )
     )
     password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': 'Password'}
+            attrs={'class': 'form-control mb-2', 'placeholder': 'Password'}
         )
     )
 
@@ -52,12 +52,12 @@ class UserLoginForm(forms.Form):
 class ManagerLoginForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'Username (ตัวอักษรอังกฤษ)'}
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Username (ตัวอักษรอังกฤษ)'}
         )
     )
     password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': 'Password'}
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Password'}
         )
     )
 
@@ -87,7 +87,7 @@ class ExtendedProfileForm(forms.ModelForm):
         fields = ('gender', 'position', 'work_group', 'phone', 'img' )
         labels = {
             'gender': 'เพศ',
-            'position' : 'หน่วยงาน',
+            'position' : 'ตำแหน่ง',
             'work_group': 'กลุ่มงาน',
             'phone' : 'โทรศัพท์',
             'img' : 'รูปโปรไฟล์'
@@ -101,27 +101,3 @@ class ExtendedProfileForm(forms.ModelForm):
             # 'img': forms.FileInput()
         }
 
-
-
-
-
-
-# class ExtendedProfileForm(forms.ModelForm):
-#     prefix = 'extended'
-
-#     class Meta:
-#         model = Profile
-#         fields = ('gender', 'work_group', 'position', 'phone', 'img')
-#         labels = {
-#             'gender': 'เพศ',
-#             'position' : 'ตำแหน่งงาน',
-#             'work_group': 'กลุ่มงาน',
-#             'phone': 'กลุ่มงาน',
-#             'img' : 'รูปโปรไฟล์',
-#         }
-#         widgets = {
-#             'gender' : forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
-#             'position': forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
-#             'work_group': forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
-#             'phone': forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
-#         }
