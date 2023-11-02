@@ -14,20 +14,28 @@
         <h4 class="mt-4 text-dark">รหัสวัสดุ : {{ product.code }}</h4>
         <!-- price -->
         <h4 class="mt-4 text-dark">ราคา : {{ product.price }} ฿</h4>
-        <h4 class="mt-4 text-dark">จำนวน : {{ product.number }} ชิ้น</h4>
+        {% if product.number == 0 %}
+        <h3 class="mt-4 text-dark">จำนวน : <h style="color: red; font-style: italic; font-weight: bold;">สต๊อกหมด</h></h3>
+        {% else %}
+        <h4 class="mt-4 text-dark">จำนวน : <h style="color: rgb(47, 0, 255); font-weight: bold;">{{ product.number }} ชิ้น</h></h4>
+        {% endif %}
         <!-- description -->
         <p class="mt-4 pe-3 mb-5">รายละเอียดเพิ่มเติม : {{ product.description }}</p>
         <!-- cart btn -->
         <form method="post" action="{% url 'cart:add_to_cart' product.id %}">
             {% csrf_token %}
+            {% if product.number == 0 %}              
+            <!-- <input type="submit" class="btn btn-primary mt-4" value="เพิ่มไปยังรถเข็น"> -->
+            {% else %}
             {{ form }}
             <input type="submit" class="btn btn-primary mt-4" value="เพิ่มไปยังรถเข็น">
+            {% endif %}
         </form>
         <br>
         {% if favorites == 'remove' %}
-        <a href="{% url 'shop:remove_from_favorites' product.id %}" class="btn btn-outline-danger mt-5 text-capitalize ">{{favorites}} from favorites</a>
+        <a href="{% url 'shop:remove_from_favorites' product.id %}" class="btn btn-outline-danger mt-3 text-capitalize ">{{favorites}} from favorites</a>
         {% else %}
-        <a href="{% url 'shop:add_to_favorites' product.id %}" class="btn btn-outline-success mt-5 text-capitalize ">add to {{favorites}}</a>
+        <a href="{% url 'shop:add_to_favorites' product.id %}" class="btn btn-outline-success mt-3 text-capitalize ">add to {{favorites}}</a>
         {% endif %}
     </div>
     <!-- product image -->

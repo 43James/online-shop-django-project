@@ -1,8 +1,8 @@
 {% extends "dashboard.html" %}
 {% block content %}
 <div class="table-responsive">
-  <table class="table">
-    <thead class="text-muted">
+  <table class="table table-hover">
+    <thead class="table table-secondary">
       <tr>
         <th scope="col">#</th>
         <th scope="col">User</th>
@@ -13,7 +13,6 @@
         <th scope="col">รายละเอียด</th>
         <th scope="col">วันที่รับของ</th>
         <!-- <th scope="col">สถานะการคืน</th> -->
-        <th scope="col"></th>
       </tr>
     </thead>
     {% for order in orders %}
@@ -26,11 +25,11 @@
 
 
         {% if order.status %}
-        <td scope="row" class="text-success">อนุมัติ</td>
+        <th scope="row" class="text-success">อนุมัติ</td>
         {% elif order.refuse %}
-        <td scope="row" class="text-danger">ปฏิเสธ</td>
+        <th scope="row" class="text-danger">ปฏิเสธ</td>
         {% else %}
-        <td scope="row" class="text-warning">รอดำเนินการ..</td>
+        <th scope="row" class="text-warning">รอดำเนินการ..</td>
         {% endif %}
 
         <td scope="col"><!-- Button trigger modal -->
@@ -39,7 +38,7 @@
             ดำเนินการ
           </button>
         </td>
-
+        
         <!-- Modal -->
         <form action="{% url 'dashboard:approve_orders' order.id %}" method="POST">
           {% csrf_token %}
@@ -51,24 +50,25 @@
                   <h5 class="modal-title" id="exampleModalLabel">ดำเนินการ ID {{ order.id }}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                
                 <div class="modal-body">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="status" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input bg-success" type="checkbox" name="status" id="flexCheckDefault" {% if order.status == True %} checked {% endif %}>
+                    <label class="form-check-label text-success" for="flexCheckDefault">
                       อนุมัติ
                     </label>
                   </div>
 
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="refuse" id="flexCheckChecked">
-                    <label class="form-check-label" for="flexCheckChecked">
+                    <input class="form-check-input bg-danger" type="checkbox" name="refuse" id="flexCheckChecked" {% if order.refuse == True %} checked {% endif %}>
+                    <label class="form-check-label text-danger" for="flexCheckChecked">
                       ปฏิเสธ
                     </label>
                   </div>
 
                   <div class="col mb-3 mt-3">
                     <label for="exampleFormControlInput1" class="form-label">วันที่รับของ</label>
-                    <input type="datetime-local" name="date_receive" value="{{ ap.date_receive }}" class="form-control"
+                    <input type="datetime-local" value="{{ ap.date_receive }}" name="date_receive" class="form-control"
                       id="exampleFormControlInput1">
                   </div>
                 </div>
@@ -83,7 +83,12 @@
 
         <td><a href="{% url 'dashboard:order_detail' order.id %}" class="text-primary text-decoration-none">Detail</a>
         </td>
+        {% if order.date_receive == none %}
+        <td scope="row">ไม่กำหนด</td>
+        {% else %}
         <td scope="row">{{ order.date_receive }}</td>
+        {% endif %}
+
       </tr>
     </tbody>
     {% endfor %}

@@ -12,7 +12,9 @@ class MyUser(AbstractUser):
     is_manager = models.BooleanField(default=False, verbose_name='ผู้จัดการคลัง', blank=True, null=True)
     is_admin = models.BooleanField(default=False, verbose_name='ผู้ดูแลระบบ' , blank=True, null=True)
     likes = models.ManyToManyField(Product, blank=True, related_name='likes')
-
+     # เพิ่มฟิลด์ตะกร้า
+    cart = models.JSONField(default=list)
+    
     class Meta:
         ordering = ['-id']
         verbose_name='สมาชิกผู้ใช้งาน (Users)'
@@ -31,6 +33,7 @@ class Profile(models.Model):
     phone = models.CharField(max_length=10, verbose_name='เบอร์โทรศัพท์มือถือ')
     img = models.ImageField(upload_to='Image_users', default='', verbose_name='รูปโปรไฟล์')
     updatedAt = models.DateTimeField(auto_now=True, blank=False)
+   
 
     def __str__(self):
         return str(self.user) + str(self.gender) + str(self.position) + self.phone

@@ -23,8 +23,8 @@ class Product(models.Model):
     slug = models.SlugField(max_length=300, unique=True)
     title = models.CharField(max_length=250, verbose_name='ชื่อรายการ')
     description = models.TextField(verbose_name='อื่นๆ')
-    number = models.IntegerField(default=0, null=True, verbose_name='จำนวน')
-    price = models.IntegerField(verbose_name='ราคา')
+    number = models.PositiveIntegerField(default=0, null=True, verbose_name='จำนวน')
+    price = models.PositiveIntegerField(verbose_name='ราคา')
     date_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

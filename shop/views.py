@@ -2,9 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
+# from dashboard.views import products
 
-from shop.models import Product, Category
+from shop.models import Product, Category, Subcategory
+
 from cart.forms import QuantityForm
+from .filters import FilterProduct, FilterSubcategory
+
 
 
 def paginat(request, list_objects):
@@ -21,8 +25,41 @@ def paginat(request, list_objects):
 @login_required
 def home_page(request):
 	products = Product.objects.all()
-	context = {'products': paginat(request ,products)}
+	context = {'products': paginat(request ,products),
+		# "filters" : filters,
+        # "filter" : filter,
+		}
 	return render(request, 'home_page.html', context)
+
+@login_required
+def search_category(request):
+    # print(request.POST.get('filters'))
+    prod = Product.objects.all()
+    filters = FilterProduct(request.GET, queryset=prod) 
+    filter = filters.qs
+
+    # query = request.GET.get('q')
+    # if query is not None:
+    #     lookups = Q(number_book__icontains=query) | Q(subject__icontains=query)
+    #     print(lookups)
+    #     filter = BookReceives.objects.filter(lookups)
+
+    page = request.GET.get('page')
+    p = Paginator(filter, 5)
+    try:
+        filter = p.page(page)
+    except:
+        filter = p.page(1)
+
+    return render(request, 'bookreceives/Breceive_list.html', {
+        "prod" : prod,
+        "page" : page,
+        "filters" : filters,
+        "filter" : filter,
+        # "qs" : qs,
+        "Subcategory" : Subcategory.objects.all(),
+    })
+
 
 @login_required
 def product_detail(request, slug):
@@ -86,3 +123,4 @@ def filter_by_category(request, slug):
 				for product in Product.objects.filter(category=category).all()]
 	context = {'products': paginat(request ,result)}
 	return render(request, 'home_page.html', context)
+ 
