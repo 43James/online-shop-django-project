@@ -45,5 +45,5 @@ class EditProductForm(ModelForm):
 class ApproveForm(ModelForm):
     class Meta:
         model = Order
-        fields = ('status', 'refuse', 'date_receive')
+        fields = ('status', 'refuse', 'date_receive', 'other')
         exclude = ('user', 'created')

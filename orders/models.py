@@ -11,6 +11,7 @@ class Order(models.Model):
     status = models.BooleanField(default=False, verbose_name="อนุมัติ")
     refuse = models.BooleanField(default=False, verbose_name="ปฏิเสธ")
     date_receive = models.DateTimeField(blank=True, null=True, verbose_name='วันที่รับของ')
+    other = models.CharField(max_length=50 ,blank=True, null=True, verbose_name='หมายเหตุ')
 
     class Meta:
         ordering = ('-id',)

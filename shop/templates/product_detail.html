@@ -27,7 +27,8 @@
             {% if product.number == 0 %}              
             <!-- <input type="submit" class="btn btn-primary mt-4" value="เพิ่มไปยังรถเข็น"> -->
             {% else %}
-            {{ form }}
+            <!-- {{ form }} -->
+            <input class="form-control" style="width: 100px;" type="number" name="quantity" min="1" max="9" value="1" placeholder="จำนวน">
             <input type="submit" class="btn btn-primary mt-4" value="เพิ่มไปยังรถเข็น">
             {% endif %}
         </form>

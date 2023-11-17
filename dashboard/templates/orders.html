@@ -53,24 +53,32 @@
                 
                 <div class="modal-body">
                   <div class="form-check">
-                    <input class="form-check-input bg-success" type="checkbox" name="status" id="flexCheckDefault" {% if order.status == True %} checked {% endif %}>
+                    <input class="form-check-input bg-success" type="checkbox" name="status" id="flexCheckDefault" 
+                    {% if order.status == True %} checked {% endif %}>
                     <label class="form-check-label text-success" for="flexCheckDefault">
                       อนุมัติ
                     </label>
                   </div>
 
                   <div class="form-check">
-                    <input class="form-check-input bg-danger" type="checkbox" name="refuse" id="flexCheckChecked" {% if order.refuse == True %} checked {% endif %}>
+                    <input class="form-check-input bg-danger" type="checkbox" name="refuse" id="flexCheckChecked" 
+                    {% if order.refuse == True %} checked {% endif %}>
                     <label class="form-check-label text-danger" for="flexCheckChecked">
                       ปฏิเสธ
                     </label>
                   </div>
 
-                  <div class="col mb-3 mt-3">
+                  <div class="col mt-3">
                     <label for="exampleFormControlInput1" class="form-label">วันที่รับของ</label>
                     <input type="datetime-local" value="{{ ap.date_receive }}" name="date_receive" class="form-control"
                       id="exampleFormControlInput1">
                   </div>
+
+                  <div class="col mb-3 mt-3">
+                    <label class="form-label">หมายเหตุ</label>
+                    <input type="text" value="{{ ap.other }}" name="other" class="form-control">
+                  </div>
+
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

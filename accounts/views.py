@@ -4,11 +4,38 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
+# from cart import cart
+from cart.models import CartItem
+# from cart.utils.cart import Cart
 from dashboard.views import is_manager
 from django.db.models import Q
 
+# from cart.views import save_cart
+
 from .forms import ExtendedProfileForm, UserRegistrationForm, UserLoginForm, ManagerLoginForm, UserProfileForm, UserEditForm
 from accounts.models import MyUser, Profile
+from cart.cart import Cart
+
+
+@login_required
+def user_register(request):
+    if request.method == "POST":
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            print("Here1")
+            form.save(commit=False)
+            form.save()
+            print("Here")
+            messages.success(request, 'เพิ่มสมาชิกสำเร็จ')
+            return redirect('accounts:manage_user')
+        else:
+            messages.error(request, 'เพิ่มสมาชิกไม่สำเร็จ')
+
+    form = UserRegistrationForm()
+    context = {'form':form,
+               'title':'Create Account',}
+    return render(request, 'register.html', context)
+
 
 
 def manager_login(request):
@@ -31,24 +58,6 @@ def manager_login(request):
         form = ManagerLoginForm()
     context = { 'title':'LogIn','form': form}
     return render(request, 'manager_login.html', context)
-
-def user_register(request):
-    if request.method == "POST":
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            print("Here1")
-            form.save(commit=False)
-            form.save()
-            print("Here")
-            messages.success(request, 'เพิ่มสมาชิกสำเร็จ')
-            return redirect('accounts:manage_user')
-        else:
-            messages.error(request, 'เพิ่มสมาชิกไม่สำเร็จ')
-
-    form = UserRegistrationForm()
-    context = {'form':form,
-               'title':'Create Account',}
-    return render(request, 'register.html', context)
 
 
 def user_login(request):
@@ -73,11 +82,13 @@ def user_login(request):
     return render(request, 'login.html', context)
 
 
+@login_required
 def user_logout(request):
     logout(request)
     return redirect('accounts:user_login')
 
 
+@login_required
 def edit_profile (request):
     user = request.user
     if request.method == "POST":
@@ -122,6 +133,7 @@ def edit_profile (request):
     return render(request, 'edit_profile.html', context)
 
 
+@login_required
 def user_profile_detail(request, username):
     try:
         obj = 1
@@ -141,7 +153,6 @@ def user_profile_detail(request, username):
     return render(request, 'user_profile.html', context)
 
 
-@user_passes_test(is_manager)
 @login_required
 def manage_user(request):
     my = MyUser.objects.all()
@@ -163,6 +174,7 @@ def manage_user(request):
         'title':'Manage User',
     })
 
+@user_passes_test(is_manager)
 @login_required
 def update_user(request, id):
     my = MyUser.objects.get(id = id)

@@ -16,6 +16,8 @@
             <h5><b style="font-weight: bold;">วันที่รับของ : <i class="bi bi-calendar-check-fill text-primary"> {{ order.date_receive }}</i></b></h5>
             {% elif order.refuse %}
             <h3><b class="text-danger">ปฏิเสธคำร้อง <i class="bi bi-heartbreak-fill"></i></b></h3>
+            <h5><b style="font-weight: bold;" class="text-danger">หมายเหตุ : {{ order.other }}</i></b></h5>
+
             {% else %}
             <h4><b class="text-warning">รอดำเนินการ..</b></h4>
             <h5><b style="font-weight: bold;">วันที่รับของ : <i class="bi bi-calendar-check-fill text-warning"> รอดำเนินการ</i></b></h5>

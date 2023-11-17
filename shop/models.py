@@ -20,7 +20,7 @@ class Product(models.Model):
     category = models.ForeignKey(Subcategory, on_delete=models.CASCADE, related_name='Subcategory', null=True, blank=True, verbose_name='หมวดหมู่')
     image = models.ImageField(upload_to='products', verbose_name='รูปภาพ')
     code = models.CharField(max_length=50, unique=True, verbose_name='เลขพัสดุ/ครุภัณฑ์')
-    slug = models.SlugField(max_length=300, unique=True)
+    slug = models.SlugField(max_length=200, unique=True)
     title = models.CharField(max_length=250, verbose_name='ชื่อรายการ')
     description = models.TextField(verbose_name='อื่นๆ')
     number = models.PositiveIntegerField(default=0, null=True, verbose_name='จำนวน')
@@ -39,3 +39,4 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.code)
         return super().save(*args, **kwargs)
+    

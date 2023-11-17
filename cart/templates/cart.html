@@ -15,17 +15,14 @@
         <th scope="col"></th>
       </tr>
     </thead>
-    {% for item in cart_data %}
+    {% for item in cart %}
     <tbody>
       <tr>
         <th scope="row">{{ forloop.counter }}</th>
         <td><a class="text-decoration-none" href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a></td>
-        <td>{{ item.product.price }} ฿</td>
+        <td>{{ item.price }} ฿</td>
         <td>{{ item.quantity }} ชิ้น</td>
-        <td>{{ item.product.total_price }} ฿</td>
-        
-
-
+        <td>{{ item.total_price }} ฿</td>
         <td><a href="{% url 'cart:remove_from_cart' item.product.id %}" class="text-danger text-decoration-none"><i
               class="bi bi-trash-fill"></i></a></td>
 
@@ -36,7 +33,7 @@
   </table>
   <hr>
   <a href="{% url 'orders:create_order' %}" style="float: right;" class="btn btn-success mt-1">Checkout</a>
-  <h4 class="mt-4"><span class="text-muted">รวมทั้งหมด :</span> {{ cart_data.get_total_price }} ฿</h4>
+  <h4 class="mt-4"><span class="text-muted">รวมทั้งหมด :</span> {{ cart.get_total_price }} ฿</h4>
 </div>
 {% else %}
 <div class="col-md-8 mt-5 pt-5 text-center">

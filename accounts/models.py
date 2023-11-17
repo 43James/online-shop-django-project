@@ -12,8 +12,6 @@ class MyUser(AbstractUser):
     is_manager = models.BooleanField(default=False, verbose_name='ผู้จัดการคลัง', blank=True, null=True)
     is_admin = models.BooleanField(default=False, verbose_name='ผู้ดูแลระบบ' , blank=True, null=True)
     likes = models.ManyToManyField(Product, blank=True, related_name='likes')
-     # เพิ่มฟิลด์ตะกร้า
-    cart = models.JSONField(default=list)
     
     class Meta:
         ordering = ['-id']

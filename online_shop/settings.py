@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -16,6 +17,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# settings.py
+# SESSION_ENGINE = "django.contrib.sessions.backends.db"  # หรือตั้งค่าให้เหมาะสม
+
+# SESSION_SAVE_EVERY_REQUEST = True
+
+# CART_SESSION_ID = 'cart'
 CART_SESSION_ID = 'cart'
 
 # Application definition
@@ -34,6 +41,7 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'dashboard.apps.DashboardConfig',
     'django_filters',
+    
 ]
 
 MIDDLEWARE = [
@@ -82,7 +90,7 @@ WSGI_APPLICATION = 'online_shop.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "shop_test",
+        "NAME": "shop_test2",
         "HOST" : "127.0.0.1",
         "USER" : "root",
         "PASSWORD" : "root",

@@ -5,7 +5,7 @@ from .models import Order, OrderItem
 # Register your models here.
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id','user','created','status','refuse','date_receive']
+    list_display = ['id','user','created','status','refuse','date_receive', 'other']
 
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ['id','order','product','price','quantity']
