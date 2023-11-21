@@ -12,7 +12,10 @@ urlpatterns = [
     path('login/manager/', views.manager_login, name='manager_login'),
     path('logout/', views.user_logout, name='user_logout'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
+    path('profile/edit/manager/', views.edit_profile_manager, name='edit_profile_manager'),
     path('profile/user/<str:username>/', views.user_profile_detail, name='user_profile_detail'),
+    path('profile/manager/<str:username>/', views.manager_profile_detail, name='manager_profile_detail'),
+
 
     path(
         'password-reset/',

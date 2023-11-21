@@ -3,9 +3,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from cart.utils.cart import Cart
 from .forms import QuantityForm
-from cart.models import CartItem
+# from cart.models import CartItem
 from shop.models import Product
-from .cart import Cart
+# from .cart import Cart
 
 
 @login_required

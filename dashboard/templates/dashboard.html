@@ -130,9 +130,9 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="{% url 'accounts:user_register' %}">Add user</a></li>
                     <li><a class="dropdown-item" href="{% url 'accounts:manage_user'  %}">Manage users</a></li>
-                    <li><a class="dropdown-item" href="{% url 'accounts:user_profile_detail' user.username %}">Profile
+                    <li><a class="dropdown-item" href="{% url 'accounts:manager_profile_detail' user.username %}">Profile
                         </a></li>
-                    <li><a class="dropdown-item" href="{% url 'accounts:edit_profile' %}">Update profile </a></li>
+                    <li><a class="dropdown-item" href="{% url 'accounts:edit_profile_manager' %}">Update profile </a></li>
                 </ul>
             </div>
             <!-- <a class="text-decoration-none" href="{% url 'accounts:user_register' %}">

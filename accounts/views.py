@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 # from cart import cart
-from cart.models import CartItem
+# from cart.models import CartItem
 # from cart.utils.cart import Cart
 from dashboard.views import is_manager
 from django.db.models import Q
@@ -14,7 +14,7 @@ from django.db.models import Q
 
 from .forms import ExtendedProfileForm, UserRegistrationForm, UserLoginForm, ManagerLoginForm, UserProfileForm, UserEditForm
 from accounts.models import MyUser, Profile
-from cart.cart import Cart
+# from cart.cart import Cart
 
 
 @login_required
@@ -35,7 +35,6 @@ def user_register(request):
     context = {'form':form,
                'title':'Create Account',}
     return render(request, 'register.html', context)
-
 
 
 def manager_login(request):
@@ -132,6 +131,49 @@ def edit_profile (request):
     }
     return render(request, 'edit_profile.html', context)
 
+@login_required
+def edit_profile_manager (request):
+    user = request.user
+    if request.method == "POST":
+        form = UserProfileForm(request.POST,  instance=user )
+        is_new_profile = False
+        
+        try:
+            #update
+            extended_form = ExtendedProfileForm(request.POST, request.FILES, instance=user.profile)
+        except:
+            #create
+            extended_form = ExtendedProfileForm(request.POST, request.FILES)
+            is_new_profile = True
+
+        if form.is_valid() and extended_form.is_valid():
+            form. save()
+
+            if is_new_profile:
+                #create
+                profile = extended_form.save(commit=False)
+                profile.user = user
+                profile.save()
+                messages.success(request, 'บันทึกข้อมูลสำเร็จ')
+            else:
+                #update
+                extended_form.save()
+                messages.success(request, 'บันทึกข้อมูลสำเร็จ')
+            return redirect('accounts:edit_profile_manager')
+
+    else:
+        form = UserProfileForm(instance=user)
+        try:
+            extended_form = ExtendedProfileForm(instance=user.profile)
+        except:
+            extended_form = ExtendedProfileForm(request.POST, request.FILES)
+
+    context = {
+        'title':'Edit Profile',
+        "form": form,
+        "extended_form": extended_form,
+    }
+    return render(request, 'edit_profile_manager.html', context)
 
 @login_required
 def user_profile_detail(request, username):
@@ -151,6 +193,25 @@ def user_profile_detail(request, username):
         
     }
     return render(request, 'user_profile.html', context)
+
+@login_required
+def manager_profile_detail(request, username):
+    try:
+        obj = 1
+        user = MyUser.objects.get(username = username)
+        profile = Profile.objects.get(user_id=user.id)
+
+    except:
+        obj = 2
+        profile = 'คุณยังไม่ได้เพิ่มข้อมูลโปรไฟล์'
+        
+    context = {
+        'user': user, 
+        'profile': profile,
+        'obj': obj,
+        
+    }
+    return render(request, 'manager_profile.html', context)
 
 
 @login_required

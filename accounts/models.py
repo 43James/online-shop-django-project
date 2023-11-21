@@ -18,7 +18,7 @@ class MyUser(AbstractUser):
         verbose_name='สมาชิกผู้ใช้งาน (Users)'
 
     def __str__(self):
-        return self.username 
+        return self.username
     
     def get_likes_count(self):
         return self.likes.count()

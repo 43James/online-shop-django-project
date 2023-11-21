@@ -53,7 +53,7 @@
         <!-- Menu -->
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="{% url 'shop:home_page' %}" class="nav-link px-2 text-dark">Home</a></li>
-          <li><a href="#" class="nav-link px-2 text-dark">Shop</a></li>
+          <!-- <li><a href="#" class="nav-link px-2 text-dark">Shop</a></li> -->
           <!-- categories dropdown -->
           <div class="dropdown text-end">
             <a href="#" class=" mt-2 me-1 ms-1 text-dark d-block link-dark text-decoration-none dropdown-toggle"
@@ -74,15 +74,15 @@
             </ul>
           </div>
         <!-- favorite icon -->
-          <li><a href="#" class="nav-link px-2 text-dark">FAQs</a></li>
+          <!-- <li><a href="#" class="nav-link px-2 text-dark">FAQs</a></li> -->
           <li><a href="#" class="nav-link px-2 text-dark">About</a></li>
         </ul>
+        {% if request.user.is_authenticated %}
         <!-- search form -->
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="{% url 'shop:search' %}">
           <input name="q" type="search" class="form-control form-control-dark" placeholder="Search..."
             aria-label="Search">
         </form>
-        {% if request.user.is_authenticated %}
         <!-- user profile dropdown -->
         <div class="dropdown text-end">
           <a href="#" class="btn btn-primary text-white me-4 d-block link-dark text-decoration-none dropdown-toggle"

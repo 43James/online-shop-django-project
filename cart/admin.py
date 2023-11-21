@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from cart.models import CartItem
+# from cart.models import CartItem
 
 # Register your models here.
-class CartItemAdmin(admin.ModelAdmin):
-    list_display = ['id',]
+# class CartItemAdmin(admin.ModelAdmin):
+#     list_display = ['id',]
 
-admin.site.register(CartItem,CartItemAdmin)
+# admin.site.register(CartItem,CartItemAdmin)
