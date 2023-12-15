@@ -17,6 +17,27 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# settings.py
+# ตัวอย่างการตั้งค่า CSRF ที่ถูกต้อง
+CSRF_COOKIE_SECURE = True  # ในกรณีที่คุณใช้ HTTPS
+CSRF_COOKIE_HTTPONLY = True
+
+SESSION_COOKIE_SAMESITE = None
+CSRF_COOKIE_SAMESITE = None
+
+CSRF_USE_SESSIONS = False
+CSRF_COOKIE_AGE = None
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
+
+# CSRF_CHECK_REFERER = False
+# CSRF_USE_SESSIONS = False
+
+# CSRF_COOKIE_SAMESITE = 'Strict'  # หรือ 'Lax'
+
+# SECURE_REFERRER_POLICY = 'same-origin'
+
+
 # settings.py
 # SESSION_ENGINE = "django.contrib.sessions.backends.db"  # หรือตั้งค่าให้เหมาะสม
 
@@ -24,7 +45,7 @@ ALLOWED_HOSTS = ['*']
 
 # CART_SESSION_ID = 'cart'
 CART_SESSION_ID = 'cart'
-
+STATIC_DIR = BASE_DIR / 'static'
 # Application definition
 
 INSTALLED_APPS = [
@@ -35,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'app_linebot.apps.AppLinebotConfig',
     'accounts.apps.AccountsConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
@@ -136,7 +158,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
+STATICFILES = [
+    STATIC_DIR,
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # directory that we want to store uploaded files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -160,3 +188,4 @@ EMAIL_USE_SSL = False
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'username@example.com'
 EMAIL_HOST_PASSWORD = 'your-password'
+

@@ -1,6 +1,7 @@
 from django.urls import path
 
 from shop import views
+# from .views import filter_by_category
 
 app_name = "shop"
 
@@ -12,6 +13,10 @@ urlpatterns = [
 	path('favorites/', views.favorites, name='favorites'),
 	path('search/', views.search, name='search'),
 	path('search-category/', views.search_category, name='search_category'),
-	path('filter/<slug:slug>/', views.filter_by_category, name='filter_by_category'),
+	# path('filter/<slug:slug>/', views.filter_by_category, name='filter_by_category'),
+    # path('filter_by_category/<int:category_id>/', filter_by_category, name='filter_by_category'),
+	path('filter_by_category/<int:category_id>/', views.filter_by_category, name='filter_by_category'),
+    path('filter_by_category/<int:category_id>/<int:subcategory_id>/', views.filter_by_category, name='filter_by_category'),
     
 ]
+    

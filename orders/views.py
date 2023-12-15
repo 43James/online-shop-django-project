@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 
+from app_linebot.views import notify_admin, notify_user
 from .models import Order, OrderItem
 from cart.utils.cart import Cart
+from django.http import HttpResponse
+
 
 
 @login_required
@@ -17,8 +19,13 @@ def create_order(request):
             order=order, product=item['product'],
             price=item['price'], quantity=item['quantity']
     )
-    return redirect('orders:pay_order', order_id=order.id)
+     # Notify admin about the new order
+    notify_admin(order.id)
 
+    # Notify user about the new order
+    notify_user(order.id)  # You can also use notify_user_approved if needed
+    
+    return redirect('orders:pay_order', order_id=order.id)
 
 
 @login_required
@@ -43,3 +50,4 @@ def user_orders(request):
     orders = request.user.orders.all()
     context = {'title':'Orders', 'orders': orders}
     return render(request, 'user_orders.html', context)
+

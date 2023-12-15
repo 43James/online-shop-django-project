@@ -1,8 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if products %}
-{% for product in products.object_list %}
+<div class="text-primary mb-3">
+  {% if selected_category %}
+  <div>
+    <h5 >หมวดหมู่ที่เลือก : <i>{{ selected_category.name }}</i></h5>
+  </div>
+  {% endif %}
+
+  {% if selected_subcategory %}
+  <div>
+    <h6>หมวดหมู่ย่อยที่เลือก : <i>{{ selected_subcategory.name }}</i></h6>
+  </div>
+  {% endif %}
+</div>
+
+<!-- {% if products %}
+    <ul>
+      {% for product in products %}
+        <li>{{ product.title }} - {{ product.description }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No products found.</p>
+  {% endif %}
+{% if products %} -->
+{% for product in products %}
 <div class="card me-1 mb-2" style="width: 11rem; margin-left: 10px;">
   {% if product.number == 0 %}
   <div id="watermark">
@@ -22,7 +45,7 @@
 </div>
 {% endfor %}
 <!-- pagination -->
-<center class="mt-5">
+<center class="mt-3">
   <div class="col-md-2">
     <ul class="pagination">
       {% if products.has_previous %}

@@ -4,6 +4,7 @@ from .models import Profile, MyUser
 
 
 class UserRegistrationForm(UserCreationForm):
+    perfix = forms.ChoiceField(choices=MyUser.PREFIX_CHOICES, label='คำนำหน้า', widget=forms.Select(attrs={'class': 'form-control mt-2', 'style': 'font-weight: bold; color: rgb(8, 0, 255);'}))
     email = forms.EmailField(required=True)
     is_general = forms.BooleanField(required=False, label="ผู้ใช้ทั่วไป")
     is_manager = forms.BooleanField(required=False, label="ผู้จัดการระบบ")
@@ -11,7 +12,7 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = MyUser
-        fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 
+        fields = ('username', 'password1', 'password2', 'email', 'perfix', 'first_name', 'last_name', 
                   'is_general', 'is_manager', 'is_admin')
            
     def save(self, commit=True):
@@ -25,6 +26,7 @@ class UserRegistrationForm(UserCreationForm):
         return user
 
 class UserEditForm(UserCreationForm):
+    perfix = forms.ChoiceField(choices=MyUser.PREFIX_CHOICES, label='คำนำหน้า', widget=forms.Select(attrs={'class': 'form-control mt-2', 'style': 'font-weight: bold; color: rgb(8, 0, 255);'}))
     email = forms.EmailField(required=True)
     is_general = forms.BooleanField(required=False, label="ผู้ใช้ทั่วไป")
     is_manager = forms.BooleanField(required=False, label="ผู้จัดการระบบ")
@@ -32,7 +34,7 @@ class UserEditForm(UserCreationForm):
 
     class Meta:
         model = MyUser
-        fields = ('username', 'password1', 'password2', 'email', 'first_name', 'last_name', 
+        fields = ('username', 'password1', 'password2', 'email', 'perfix', 'first_name', 'last_name', 
                   'is_general', 'is_manager', 'is_admin',)
 
         
@@ -63,19 +65,25 @@ class ManagerLoginForm(forms.Form):
     )
 
 
+
 class UserProfileForm(forms.ModelForm):
+
+    perfix = forms.ChoiceField(choices=MyUser.PREFIX_CHOICES, label='คำนำหน้า', widget=forms.Select(attrs={'class': 'form-control mt-2', 'style': 'font-weight: bold; color: rgb(8, 0, 255);'}))
+
     class Meta:
         model = MyUser
-        fields = ('username', 'email', 'first_name', 'last_name', )
+        fields = ('username', 'email', 'perfix', 'first_name', 'last_name', )
         labels = {
             'username' : 'Username',
             'email': 'อีเมล',
+            'perfix':'คำนำหน้า',
             'first_name' : 'ชื่อ',
             'last_name' : 'นามสกุล',
         }
         widgets = {
             'username' : forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
             'email' : forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
+            'perfix' : forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
             'first_name' : forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
             'last_name' : forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}),
         }

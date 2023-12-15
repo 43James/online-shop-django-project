@@ -4,17 +4,17 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-# from cart import cart
-# from cart.models import CartItem
-# from cart.utils.cart import Cart
+from django.http import HttpResponse
 from dashboard.views import is_manager
 from django.db.models import Q
+from orders.models import Order
+from shop.models import Product  # นำเข้าคลาส Cart ที่ใช้จัดการตะกร้า
 
 # from cart.views import save_cart
 
 from .forms import ExtendedProfileForm, UserRegistrationForm, UserLoginForm, ManagerLoginForm, UserProfileForm, UserEditForm
 from accounts.models import MyUser, Profile
-# from cart.cart import Cart
+from cart.cart import Cart
 
 
 @login_required
@@ -32,8 +32,11 @@ def user_register(request):
             messages.error(request, 'เพิ่มสมาชิกไม่สำเร็จ')
 
     form = UserRegistrationForm()
-    context = {'form':form,
-               'title':'Create Account',}
+    context = {
+        'form':form,
+        'title':'เพิ่มสมาชิก',
+        'pending_orders_count': count_pending_orders(),
+        }
     return render(request, 'register.html', context)
 
 
@@ -77,13 +80,34 @@ def user_login(request):
                 return redirect('accounts:user_login')
     else:
         form = UserLoginForm()
-    context = {'title':'Login', 'form': form}
+    context = {
+        'title':'Login', 'form': form}
     return render(request, 'login.html', context)
 
 
 @login_required
+# def user_logout(request):
+#     cart = Cart(request)
+#      # เพิ่มจำนวนสินค้าในสต็อกเมื่อออกจากระบบ
+#     for item_id, item in cart.cart.items():
+#         product = get_object_or_404(Product, id=item['product_id'])
+#         product.number += item['quantity']
+#         product.save()
+#     logout(request)
+#     return redirect('accounts:user_login')
+
 def user_logout(request):
+    cart = Cart(request)
+    
+    # ลูปเพื่อนำจำนวนสินค้าในตะกร้ากลับไปยังสต็อก
+    for item_id, item_data in cart.cart.items():
+        product = get_object_or_404(Product, id=item_id)
+        product.number += item_data['quantity']
+        product.save()
+
+    # cart.clear()  # ลบข้อมูลในตะกร้าหลังจากออกจากระบบ
     logout(request)
+    
     return redirect('accounts:user_login')
 
 
@@ -125,9 +149,10 @@ def edit_profile (request):
             extended_form = ExtendedProfileForm(request.POST, request.FILES)
 
     context = {
-        'title':'Edit Profile',
+        'title':'แก้ไขโปรไฟล์',
         "form": form,
         "extended_form": extended_form,
+        'pending_orders_count': count_pending_orders(),
     }
     return render(request, 'edit_profile.html', context)
 
@@ -169,9 +194,10 @@ def edit_profile_manager (request):
             extended_form = ExtendedProfileForm(request.POST, request.FILES)
 
     context = {
-        'title':'Edit Profile',
+        'title':'แก้ไขโปรไฟล์',
         "form": form,
         "extended_form": extended_form,
+        'pending_orders_count': count_pending_orders(),
     }
     return render(request, 'edit_profile_manager.html', context)
 
@@ -190,7 +216,7 @@ def user_profile_detail(request, username):
         'user': user, 
         'profile': profile,
         'obj': obj,
-        
+        'pending_orders_count': count_pending_orders(),
     }
     return render(request, 'user_profile.html', context)
 
@@ -206,10 +232,11 @@ def manager_profile_detail(request, username):
         profile = 'คุณยังไม่ได้เพิ่มข้อมูลโปรไฟล์'
         
     context = {
+        'title' : 'โปรไฟล์',
         'user': user, 
         'profile': profile,
         'obj': obj,
-        
+        'pending_orders_count': count_pending_orders(),
     }
     return render(request, 'manager_profile.html', context)
 
@@ -232,7 +259,8 @@ def manage_user(request):
 
     return render(request, "manage_user.html",{
         "my" : my,
-        'title':'Manage User',
+        'title':'จัดการสมาชิก',
+        'pending_orders_count': count_pending_orders(),
     })
 
 @user_passes_test(is_manager)
@@ -255,7 +283,8 @@ def update_user(request, id):
     return render(request, 'update_user.html', {
         'my':my,
         'form': form,
-        'title' : 'แก้ไขข้อมูลสมาชิก'
+        'title' : 'แก้ไขข้อมูลสมาชิก',
+        'pending_orders_count': count_pending_orders(),
     })
 
 @login_required 
@@ -266,3 +295,7 @@ def delete_user(request, id):
     messages.success(request, 'ลบสมาชิกสำเร็จ')
     return redirect('manage_user')
 
+def count_pending_orders():
+    # ดึงข้อมูลออเดอร์ทั้งหมดที่รอการยืนยัน
+    pending_orders = Order.objects.filter(status=False, refuse=False)
+    return pending_orders.count()

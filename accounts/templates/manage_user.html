@@ -3,8 +3,8 @@
 
 <div class="col" >
     <div class="table-responsive">
-        <table class="table" style="text-align: center;">
-            <thead>
+        <table class="table table-hover" style="text-align: center;">
+            <thead class="table-secondary">
                 <tr>
                     <th scope="col">ลำดับ</th>
                     <th scope="col">ชื่อผู้ใช้</th>
@@ -21,7 +21,7 @@
                 <tr>
                     <th scope="row">{{ forloop.counter }}</td>
                     <td scope="row">{{ l.username }}</td>
-                    <td scope="row">{{ l.first_name }} {{ l.last_name }}</td>
+                    <td scope="row">{{ l.get_full_name }}</td>
                     <td scope="row">{{ l.email }}</td>
                     {% if l.is_general and l.is_manager and l.is_admin %}
                     <td scope="row" style="color:rgb(0, 134, 0); font-weight: bold;">all</td>

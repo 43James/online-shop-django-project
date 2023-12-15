@@ -22,6 +22,34 @@ def add_to_cart(request, product_id):
     return redirect('shop:product_detail', slug=product.slug)
 
 
+# @login_required
+# def remove_from_cart(request, product_id):
+#     cart = Cart(request)
+#     product = get_object_or_404(Product, id=product_id)
+
+#     # ตรวจสอบว่า product_id มีอยู่ใน cart หรือไม่
+#     if str(product_id) in cart.cart:
+#         # เก็บข้อมูลสินค้าก่อนลบ
+#         removed_item = cart.cart[str(product_id)].copy()
+#         cart.remove(product)
+
+#         # เพิ่มจำนวนสินค้าในสต็อกเมื่อลบออกจากตะกร้า
+#         product.number += removed_item['quantity']
+#         product.save()
+
+#         return redirect('cart:show_cart')
+#     else:
+#         messages.error(request, 'Product not found in the cart.')
+#         return redirect('cart:show_cart')
+
+
+@login_required
+def show_cart(request):
+    cart = Cart(request)
+    context = {'title': 'Cart', 'cart': cart}
+    return render(request, 'cart.html', context)
+
+
 @login_required
 def remove_from_cart(request, product_id):
     cart = Cart(request)
@@ -41,16 +69,6 @@ def remove_from_cart(request, product_id):
     else:
         messages.error(request, 'Product not found in the cart.')
         return redirect('cart:show_cart')
-
-
-@login_required
-def show_cart(request):
-    cart = Cart(request)
-    context = {'title': 'Cart', 'cart': cart}
-    return render(request, 'cart.html', context)
-
-
-
 
 
 

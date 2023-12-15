@@ -11,7 +11,7 @@
       {% csrf_token %}
       {{ form.non_field_errors }}
       
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-6 mb-3">
           <label for="id_first_name" class="form-label"><strong>ชื่อ</strong></label>
           <input type="text" value="{{ my.first_name }}" name="first_name" class="form-control" required id="id_first_name">
@@ -21,6 +21,30 @@
         <div class="col-md-6 mb-3">
           <label for="id_last_name" class="form-label"><strong>นามสกุล</strong></label>
           <input type="text" value="{{ my.last_name }}" name="last_name" class="form-control" required id="id_last_name">
+          {{ form.last_name.errors }}
+        </div>
+      </div> -->
+
+      <div class="row">
+        <div class="col-md-2">
+          <label class="form-label required"><strong>คำนำหน้า</strong></label>
+          <select name="{{ form.perfix.name }}" required class="form-select mb-3">
+            {% for value, display_name in form.perfix.field.choices %}
+                <!-- <option disabled selected hidden>เลือก..</option> -->
+                <option value="{{ value }}" {% if form.perfix.value == value %}selected{% endif %}>{{ display_name }}</option>
+            {% endfor %}
+        </select>
+        {{ form.form.perfix.name.errors }}
+        </div>
+        <div class="col-md-5 mb-3">
+          <label class="form-label"><strong>ชื่อ</strong></label>
+          <input type="text" value="{{ my.first_name }}"  name="first_name" class="form-control" required>
+          {{ form.first_name.errors }}
+        </div>
+  
+        <div class="col-md-5 mb-3">
+          <label class="form-label"><strong>นามสกุล</strong></label>
+          <input type="text" value="{{ my.last_name }}" name="last_name" class="form-control" required>
           {{ form.last_name.errors }}
         </div>
       </div>

@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 # from dashboard.views import products
 
 from shop.models import Product, Category, Subcategory
-
+from django.db.models import Q
 from cart.forms import QuantityForm
 from .filters import FilterProduct, FilterSubcategory
 
@@ -105,22 +105,78 @@ def search(request):
 	context = {'products': paginat(request ,products)}
 	return render(request, 'home_page.html', context)
 
-@login_required
-def filter_by_category(request, slug):
-	"""when user clicks on parent category
-	we want to show all products in its sub-categories too
-	"""
-	result = []
-	category = Category.objects.filter(slug=slug).first()
-	[result.append(product) \
-		for product in Product.objects.filter(category=category.id).all()]
-	# check if category is parent then get all sub-categories
-	if not category.is_sub:
-		sub_categories = category.sub_categories.all()
-		# get all sub-categories products 
-		for category in sub_categories:
-			[result.append(product) \
-				for product in Product.objects.filter(category=category).all()]
-	context = {'products': paginat(request ,result)}
-	return render(request, 'home_page.html', context)
+# @login_required
+# def filter_by_category(request, slug):
+# 	"""when user clicks on parent category
+# 	we want to show all products in its sub-categories too
+# 	"""
+# 	result = []
+# 	category = Category.objects.filter(slug=slug).first()
+# 	[result.append(product) \
+# 		for product in Product.objects.filter(category=category.id).all()]
+# 	# check if category is parent then get all sub-categories
+# 	if not category.is_sub:
+# 		sub_categories = category.sub_categories.all()
+# 		# get all sub-categories products 
+# 		for category in sub_categories:
+# 			[result.append(product) \
+# 				for product in Product.objects.filter(category=category).all()]
+# 	context = {'products': paginat(request ,result)}
+# 	return render(request, 'home_page.html', context)
  
+
+# @login_required
+# def filter_by_category(request, category_id=None, subcategory_id=None):
+#     categories = Category.objects.all()
+
+#     if category_id:
+#         category = Category.objects.get(pk=category_id)
+#         subcategories = category.subcategory_set.all()
+#     else:
+#         category = None
+#         subcategories = None
+
+#     if subcategory_id:
+#         subcategory = Subcategory.objects.get(pk=subcategory_id)
+#         products = Product.objects.filter(category=subcategory)
+#     else:
+#         subcategory = None
+#         products = Product.objects.all()
+
+#     context = {
+#         'categories': categories,
+#         'selected_category': category,
+#         'subcategories': subcategories,
+#         'selected_subcategory': subcategory,
+#         'products': products,
+#     }
+
+#     return render(request, 'home_page.html', context)
+
+@login_required
+def filter_by_category(request, category_id=None, subcategory_id=None):
+    categories = Category.objects.all()
+
+    if category_id:
+        category = get_object_or_404(Category, pk=category_id)
+        subcategories = Subcategory.objects.filter(category=category)
+    else:
+        category = None
+        subcategories = None
+
+    if subcategory_id:
+        subcategory = get_object_or_404(Subcategory, pk=subcategory_id)
+        products = Product.objects.filter(category=subcategory)
+    else:
+        subcategory = None
+        products = Product.objects.all()
+
+    context = {
+        'categories': categories,
+        'selected_category': category,
+        'subcategories': subcategories,
+        'selected_subcategory': subcategory,
+        'products': products,
+    }
+
+    return render(request, 'home_page.html', context)

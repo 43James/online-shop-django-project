@@ -18,6 +18,18 @@ class Order(models.Model):
     
     def __str__(self):
         return str(self.id)
+  
+    
+    # def get_approval_count(self):
+    #     return Order.objects.filter(status=False, refuse=False).count()
+    # def get_approval_count(self):
+    #     # นับจำนวนออเดอร์ที่รอการยืนยัน
+    #     approval_count = Order.objects.filter(status=False, refuse=False).count()
+    #     return approval_count
+
+    @property
+    def get_approval_count(self):
+        return Order.objects.filter(status=False).count()
 
     @property
     def get_total_price(self):
@@ -25,6 +37,7 @@ class Order(models.Model):
         return total
     
 
+    
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')

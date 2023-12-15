@@ -6,7 +6,16 @@ from shop.models import Product
 from django.utils.html import format_html
 
 
+
 class MyUser(AbstractUser):
+    
+    PREFIX_CHOICES = [
+        ('นาย', 'นาย'),
+        ('นาง', 'นาง'),
+        ('นางสาว', 'นางสาว'),
+    ]
+
+    perfix = models.CharField(max_length=10, blank=True, null=True, verbose_name="คำนำหน้า", choices=PREFIX_CHOICES)
     email = models.EmailField(max_length=100, verbose_name="อีเมล", unique=True)
     is_general = models.BooleanField(default=False, verbose_name='ผู้ใช้งานทั่วไป' , blank=True, null=True)
     is_manager = models.BooleanField(default=False, verbose_name='ผู้จัดการคลัง', blank=True, null=True)
@@ -19,9 +28,12 @@ class MyUser(AbstractUser):
 
     def __str__(self):
         return self.username
-    
+
     def get_likes_count(self):
         return self.likes.count()
+    
+    def get_full_name(self):
+        return f"{self.perfix}{self.first_name}   {self.last_name}"
 
 class Profile(models.Model):
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
@@ -31,7 +43,6 @@ class Profile(models.Model):
     phone = models.CharField(max_length=10, verbose_name='เบอร์โทรศัพท์มือถือ')
     img = models.ImageField(upload_to='Image_users', default='', verbose_name='รูปโปรไฟล์')
     updatedAt = models.DateTimeField(auto_now=True, blank=False)
-   
 
     def __str__(self):
         return str(self.user) + str(self.gender) + str(self.position) + self.phone
