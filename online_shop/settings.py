@@ -17,8 +17,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# settings.py
+
+
 # ตัวอย่างการตั้งค่า CSRF ที่ถูกต้อง
 CSRF_COOKIE_SECURE = True  # ในกรณีที่คุณใช้ HTTPS
 CSRF_COOKIE_HTTPONLY = True
@@ -30,20 +32,15 @@ CSRF_USE_SESSIONS = False
 CSRF_COOKIE_AGE = None
 CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
 
+
 # CSRF_CHECK_REFERER = False
-# CSRF_USE_SESSIONS = False
-
 # CSRF_COOKIE_SAMESITE = 'Strict'  # หรือ 'Lax'
-
 # SECURE_REFERRER_POLICY = 'same-origin'
 
-
-# settings.py
 # SESSION_ENGINE = "django.contrib.sessions.backends.db"  # หรือตั้งค่าให้เหมาะสม
-
 # SESSION_SAVE_EVERY_REQUEST = True
 
-# CART_SESSION_ID = 'cart'
+
 CART_SESSION_ID = 'cart'
 STATIC_DIR = BASE_DIR / 'static'
 # Application definition
