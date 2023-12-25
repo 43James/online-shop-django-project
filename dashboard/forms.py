@@ -6,6 +6,7 @@ from orders.models import OrderItem, Order
 
 
 class AddProductForm(ModelForm):
+    
     class Meta:
         model = Product
         fields = ['category', 'image', 'code', 'title', 'number', 'price', 'description']

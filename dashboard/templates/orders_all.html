@@ -11,14 +11,12 @@
         <th scope="col">สถานะ</th>
         <th scope="col">ทำรายการ</th>
         <th scope="col">รายละเอียด</th>
-        <!-- <th scope="col">วันที่รับของ</th> -->
-        <!-- <th scope="col">สถานะการคืน</th> -->
       </tr>
     </thead>
     {% for order in orders_all %}
     <tbody>
       <tr>
-        <th scope="row">{{ forloop.counter }}</th>
+        <th scope="row">{{ forloop.counter0|add:orders_all.start_index }}</th>
         <td scope="row">{{ order.user.get_full_name }}</td>
         <td scope="row">{{ order.id }}</td>
         <td scope="row">{{ order.get_total_price }} ฿</td>
@@ -49,7 +47,6 @@
             ดำเนินการ
           </button>
          {% endif %}
-
         </td>
         
         <!-- Modal -->
@@ -94,8 +91,8 @@
 
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                  <button type="submit" class="btn btn-primary">บันทึก</button>
                 </div>
               </div>
             </div>
@@ -104,11 +101,6 @@
 
         <td><a href="{% url 'dashboard:order_detail' order.id %}" class="text-primary text-decoration-none">Detail</a>
         </td>
-        <!-- {% if order.date_receive == none %}
-        <td scope="row">ไม่กำหนด</td>
-        {% else %}
-        <td scope="row">{{ order.date_receive }}</td>
-        {% endif %} -->
 
       </tr>
     </tbody>
@@ -157,48 +149,3 @@
 </nav>
 </div>
 {% endblock %}
-<div class="modal fade" id="exampleModal{{ order.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="content col-md-6 rounded" style="background-color: white;">
-
-      <div class="modal-header">
-        <h5 class="modal-title text-center container" id="exampleModalLabel">ดำเนินการ ID {{ order.id }}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body">
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="status" id="flexRadioDefault1">
-          <label class="form-check-label" for="flexRadioDefault1">
-            อนุมัติ
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="refuse" id="flexRadioDefault2">
-          <label class="form-check-label" for="flexRadioDefault2">
-            ปฏิเสธ
-          </label>
-        </div>
-
-        <div class="col mb-3 mt-3">
-          <label for="exampleFormControlInput1" class="form-label">วันที่รับของ</label>
-          <input type="datetime-local" name="date_receive" class="form-control" id="exampleFormControlInput1">
-        </div>
-
-        <!-- <label for="exampleFormControlInput1" class="form-label">สถานะการคืน</label> -->
-        <!-- <div class="form-check">
-              <input class="form-check-input" type="radio" value="{{ ap.return_status }}" {% if ap.return_status == false %} checked {% endif %} name="return_status" id="flexRadioDefault1">
-              <label class="form-check-label" for="flexRadioDefault1">
-                กรุณาคืน
-              </label>
-            </div> -->
-
-
-        <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-      </div>
-    </div>
-  </div>

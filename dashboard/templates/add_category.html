@@ -1,13 +1,12 @@
 {% extends "dashboard.html" %}
 {% block content %}
-
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <div class="form-group">
-        <button class="btn btn-primary mt-3 w-100" type="submit">Submit</button>
-    </div>
-</form>
-
+<div class="col-md-6 justify-content-center container">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-group">
+            <button class="btn btn-primary mt-3 w-100" type="submit">Submit</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
-

@@ -20,15 +20,18 @@
       {% endif %}
         <div class="col-md-4"></div>
         <div class="col-md-4">
-          <form method="post" class="mt-5 pt-5">
+          <form method="post" class="mt-4 pt-5">
             {% csrf_token %}
             <h2 class="text-center">Dashboard</h2>
             <hr>
             {{ form }}
-            <button class="w-100 btn btn-primary mt-4" type="submit">Sign In</button>
+            <button class="w-100 btn btn-primary mt-3" type="submit">Sign In</button>
           </form>
-          <hr>
-          <p class="text-muted mt-3"><a href="{% url 'accounts:user_login' %}">Back to shop</a></p>
+          <!-- <p class="text-muted mt-3"><a href="{% url 'accounts:user_login' %}">Back to shop</a></p> -->
+          <div class="pt-3">
+            <small class="text-muted"><a class="text-decoration-none" href="{% url 'accounts:user_login' %}">Back to shop</a>
+            </small>
+        </div>
         </div>
         <div class="col-md-4"></div>
       </div>

@@ -53,17 +53,14 @@
         </div>
     </div> -->
 
-<div class="container">
+<div class="container mt-4">
     {% if obj == 1 %}
     <div class="row mb-4">
         <div class="col mb-5" style="justify-content: center; display: flex;">
             <div>
-                {% if img %}
-                <p>ไม่มีรูปภาพ</p>
-                {% else %}
+                {% if user.profile.img.url == user.profile.img.url %}
                 <!-- <img src="{{ profile.img.url }}" style="max-height: 295px; border-radius: 50%; " class="mt-3 img-rounded mb-3" alt=""> -->
-                <canvas class="mt-5 mb-3" id="profileCanvas" width="300" height="300"
-                    style="border-radius: 50%;"></canvas>
+                <canvas class="mt-5 mb-3" id="profileCanvas" width="300" height="300" style="border-radius: 50%;"></canvas>
                 <script>
                     var canvas = document.getElementById('profileCanvas');
                     var ctx = canvas.getContext('2d');
@@ -78,6 +75,10 @@
                         ctx.drawImage(img, 0, 0, 300, 300);
                     };
                 </script>
+
+                {% else %}
+                <br><br><br><br><br><br>
+                <p class="text-center">ไม่มีรูปโปรไฟล์</p>
                 {% endif %}
             </div>
         </div>

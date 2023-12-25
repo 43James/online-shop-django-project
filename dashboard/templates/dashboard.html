@@ -6,22 +6,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=TH-Sarabun">
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
-    <title>{{title}}</title>
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
-
     <style>
+        body {
+        font-family: 'TH-Sarabun', sans-serif;
+        font-size: 16px;
+    }
         table {
             border-collapse: collapse;
             width: 100%;
@@ -34,15 +37,6 @@
             text-align: center;
         }
 
-        /* กำหนดความกว้างของคอลัมน์ */
-        /* th {
-            width: 10%;
-        }
-
-        td {
-            width: 15%;
-        } */
-
         /* ใช้ CSS เพื่อป้องกันข้อความไม่ตกไปบรรทัดใหม่ */
         td,
         tr {
@@ -51,72 +45,33 @@
             text-overflow: ellipsis;
         }
 
-        /* .sidebar {
-            position: fixed;
-            right: 0;
-            top: 5;
-            bottom: 5;
-            overflow-y: auto;
+    </style>
+    <style>
+        .password-container {
+            position: relative;
+        }
+
+        /* input {
+            padding-right: 10px;
         } */
 
-        /* @media print {
-            body {
-                margin: 0;
-                padding: 0;
-            }
-
-            .print-content {
-                width: 21cm;
-                min-height: 29.7cm;
-                margin: 1cm auto;
-                padding: 2cm;
-                border: 1px #D3D3D3 solid;
-            }
-        } */
-
-        /* @media print {
-            body * {
-                visibility: hidden;
-            }
-
-            .printable-a4,
-            .printable-a4 * {
-                visibility: visible;
-            }
-
-            .printable-a4 {
-                width: 21cm;
-                min-height: 29.7cm;
-                margin: 1cm auto;
-                padding: 2cm;
-                border: 1px #D3D3D3 solid;
-            }
-        } */
-
-        /* @media print {
-            body {
-                visibility: hidden;
-            }
-
-            .printable-a4 {
-                visibility: visible;
-                width: 21cm;
-                min-height: 29.7cm;
-                margin: 1cm auto;
-                padding: 2cm;
-                border: 1px #D3D3D3 solid;
-            }
-        } */
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
-    <div class="row d-flex mt-2" style="margin-right: 10px; margin-left: 10px;">
+    <div class="row d-flex mt-3" style="margin-right: 10px; margin-left: 10px;">
         <!-- <div class="col-md-1"></div> -->
         <!-- content -->
         <div class="col-md-9 justify-content-center">
-            <h2 class="border-bottom text-capitalize text-center" style="font-weight: bold;">{{ title }}</h2>
-            <div class="p-4">
+            <h2 class=" text-capitalize border-bottom text-center" style="font-weight: bold;">{{ title }}</h2>
+            <div class="p-2">
                 <!-- messages -->
                 {% if messages %}
                 <div class="messages justify-content-center">
@@ -136,6 +91,34 @@
                     {% endfor %}
                 </div>
                 {% endif %}
+
+                
+                    <!-- search form -->
+                    {% if '/products/' in request.path %}
+                    <div class="col-3 mb-3" >
+                        <form class="col-lg-auto mb-lg-0 me-lg-3" action="{% url 'dashboard:products' %}">
+                          <input name="q" type="search" class="form-control form-control-dark" placeholder="Search..."
+                            aria-label="Search">
+                        </form>
+                    </div>
+        
+                    {% elif '/orders_all/' in request.path %}
+                    <div class="col-3 mb-3" >
+                        <form class="col-lg-auto mb-lg-0 me-lg-3"  action="{% url 'dashboard:orders_all' %}">
+                        <input name="q" type="search" class="form-control form-control-dark" placeholder="Search..."
+                        aria-label="Search">
+                        </form>
+                    </div>
+
+                    {% elif '/manage/user/' in request.path %}
+                    <div class="col-3 mb-3" >
+                        <form class="col-lg-auto mb-lg-0 me-lg-3"  action="{% url 'accounts:manage_user' %}">
+                        <input name="q" type="search" class="form-control form-control-dark" placeholder="Search..."
+                        aria-label="Search">
+                        </form>
+                    </div>
+                    {% endif %}
+                
                 {% block content %}{% endblock %}
             </div>
         </div>
@@ -170,27 +153,12 @@
                     เพิ่มวัสดุ..
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="{% url 'dashboard:add_product' %}">เพิ่มรายการวัสดุใหม่</a></li>
-                    <li><a class="dropdown-item" href="{% url 'dashboard:add_category' %}">เพิ่มหมวดหมู่หลัก</a></li>
-                    <li><a class="dropdown-item" href="{% url 'dashboard:add_subcategory' %}">เพิ่มหมวดหมู่ย่อย</a>
+                    <li><a class="dropdown-item {% if '/add-product/' in request.path %}active text-white{% endif %}" href="{% url 'dashboard:add_product' %}">เพิ่มรายการวัสดุ ใหม่!</a></li>
+                    <li><a class="dropdown-item {% if '/add-category/' in request.path %}active text-white{% endif %}" href="{% url 'dashboard:add_category' %}">เพิ่มหมวดหมู่หลัก</a></li>
+                    <li><a class="dropdown-item {% if '/add-subcategory/' in request.path %}active text-white{% endif %}" href="{% url 'dashboard:add_subcategory' %}">เพิ่มหมวดหมู่ย่อย</a>
                     </li>
                 </ul>
             </div>
-            <!-- <a class="text-decoration-none" href="{% url 'dashboard:products' %}">
-                <li class="rounded list-group-item mt-2 text-primary">Products</li>
-            </a>
-            <a class="text-decoration-none" href="{% url 'dashboard:add_product' %}">
-                <li class="rounded list-group-item mt-2 text-primary">Add New Product</li>
-            </a>
-            <a class="text-decoration-none" href="{% url 'dashboard:add_category' %}">
-                <li class="rounded list-group-item mt-2  text-primary">Add New Category</li>
-            </a>
-            <a class="text-decoration-none" href="{% url 'dashboard:add_category' %}">
-                <li class="rounded list-group-item mt-2  text-primary">Add New Subcategory</li>
-            </a>
-            <a class="text-decoration-none" href="{% url 'dashboard:orders' %}">
-                <li class="rounded list-group-item mt-2  text-primary">Orders</li>
-            </a> -->
             <hr>
             <h4 class="text-muted">Menu จัดการข้อมูลผู้ใช้งาน</h4>
             <div class="dropdown">
@@ -199,23 +167,14 @@
                     Manage..
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="{% url 'accounts:user_register' %}">เพิ่มผู้ใช้งานใหม่</a></li>
-                    <li><a class="dropdown-item" href="{% url 'accounts:manage_user'  %}">จัดการผู้ใช้งาน</a></li>
-                    <li><a class="dropdown-item"
+                    <li><a class="dropdown-item {% if '/register/' in request.path %}active text-white{% endif %}" href="{% url 'accounts:user_register' %}">เพิ่มสมาชิก ใหม่!</a></li>
+                    <li><a class="dropdown-item {% if '/manage/user/' in request.path %}active text-white{% endif %}" href="{% url 'accounts:manage_user'  %}">จัดการผู้ใช้งาน</a></li>
+                    <li><a class="dropdown-item {% if '/profile/manager/' in request.path %}active text-white{% endif %}"
                             href="{% url 'accounts:manager_profile_detail' user.username %}">โปรไฟล์
                         </a></li>
-                    <li><a class="dropdown-item" href="{% url 'accounts:edit_profile_manager' %}">แก้ไขโปรไฟล์ </a></li>
+                    <li><a class="dropdown-item {% if '/profile/edit/manager/' in request.path %}active text-white{% endif %}" href="{% url 'accounts:edit_profile_manager' %}">แก้ไขโปรไฟล์ </a></li>
                 </ul>
             </div>
-            <!-- <a class="text-decoration-none" href="{% url 'accounts:user_register' %}">
-                <li class="rounded list-group-item mt-2  text-primary">Add Users</li>
-            </a>
-            <a class="text-decoration-none" href="{% url 'accounts:manage_user' %}">
-                <li class="rounded list-group-item mt-2  text-primary">Manager Users</li>
-            </a>
-            <a class="text-decoration-none" href="{% url 'dashboard:orders' %}">
-                <li class="rounded list-group-item mt-2  text-primary">Profile Manager</li>
-            </a> -->
             <hr>
             <div class="row ">
                 <div class="col-6">
@@ -233,7 +192,7 @@
                 style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; 
             font-size: 15px; background:rgb(58, 82, 114); padding: 0.5em; border-radius: 8px;  color:rgb(255, 255, 255);">
                 <div class="col-2 d-flex justify-content-center">
-                    {% if user.profile %}
+                    {% if user.profile.img %}
                     <!-- <img src="{{ user.profile.img.url }}" style="border-radius: 50%; max-height: 50px; max-width: 50px;"> -->
                     <canvas id="profileCanvas" width="50" height="50" style="border-radius: 50%;"></canvas>
                     <script>
@@ -252,7 +211,7 @@
                     </script>
                     {% else %}
                     <img src="https://i.pinimg.com/564x/5e/57/c8/5e57c8344039bc815bd95d8b6abec92d.jpg"
-                        style="max-height: 25px; border-radius: 50%;">
+                        style="max-height: 50px; border-radius: 50%;">
                     {% endif %}
                 </div>
                 <div class="col-9 " style="display: grid; place-items: center;">You logged in as:
@@ -276,6 +235,7 @@
 
     });
 </script>
+
 <script>
     var contentHtml = document.getElementById('content').innerHTML;
     printA4(contentHtml);
@@ -314,8 +274,36 @@
         printWindow.document.close();
         printWindow.print();
     }
+</script>
 
+<script>
+    function togglePassword1() {
+        const passwordField = document.getElementById("passwordField1");
+        const toggleBtn = document.querySelector(".toggle-password1");
 
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleBtn.textContent = "👁️";
+        } else {
+            passwordField.type = "password";
+            toggleBtn.textContent = "👁️";
+        }
+    }
+</script>
+
+<script>
+    function togglePassword2() {
+        const passwordField = document.getElementById("passwordField2");
+        const toggleBtn = document.querySelector(".toggle-password2");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleBtn.textContent = "👁️";
+        } else {
+            passwordField2.type = "password";
+            toggleBtn.textContent = "👁️";
+        }
+    }
 </script>
 
 </html>

@@ -59,11 +59,9 @@
         <div class="col mb-5" style="justify-content: center; display: flex;">
                 <div>
                     <div class="row text-center mx-4">
-                        <h4>โปรไฟล์</hภ>
+                        <h4>โปรไฟล์</h4>
                     </div>
-                    {% if img %}
-                    <p>ไม่มีรูปภาพ</p>
-                    {% else %}
+                    {% if user.profile.img.url == user.profile.img.url %}
                     <!-- <img src="{{ profile.img.url }}" style="max-height: 295px; border-radius: 50%; " class="mt-3 img-rounded mb-3" alt=""> -->
                     <canvas class="mt-5 mb-3" id="profileCanvas" width="300" height="300" style="border-radius: 50%;"></canvas>
                     <script>
@@ -80,6 +78,10 @@
                             ctx.drawImage(img, 0, 0, 300, 300);
                         };
                     </script>
+
+                    {% else %}
+                    <br><br><br><br><br><br>
+                    <p class="text-center">ไม่มีรูปโปรไฟล์</p>
                     {% endif %}
                 </div>
         </div>
@@ -98,16 +100,16 @@
                 <div class="col-lg">{{ profile.gender }}</div>
             </div>
             <div class="row">
-                <div class="col-lg-5"><b>เบอร์โทรศัพท์มือถือ</b></div>
-                <div class="col-lg">{{ profile.phone }}</div>
-            </div>
-            <div class="row">
                 <div class="col-lg-5"><b>ตำแหน่ง</b></div>
                 <div class="col-lg">{{ profile.position }}</div>
             </div>
-            <div class="row mb-5">
+            <div class="row">
                 <div class="col-lg-5"><b>กลุ่มงาน</b></div>
                 <div class="col-lg">{{ profile.work_group }}</div>
+            </div>
+            <div class="row  mb-5">
+                <div class="col-lg-5"><b>เบอร์โทรศัพท์มือถือ</b></div>
+                <div class="col-lg">{{ profile.phone }}</div>
             </div>
 
 

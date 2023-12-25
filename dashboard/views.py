@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import Http404, JsonResponse
 from django.core.paginator import Paginator
 from app_linebot.views import notify_user_approved
+from django.db.models import Q
 from shop.models import Product
 from accounts.models import MyUser
 from orders.models import Order, OrderItem
@@ -40,9 +41,16 @@ def dashboard_home(request):
 @login_required
 def products(request):
     products = Product.objects.all()
+
+    query = request.GET.get('q')
+    if query is not None:
+        lookups = Q(title__icontains=query)
+        products = Product.objects.filter(lookups)
+
+
     page = request.GET.get('page')
 
-    p = Paginator(products, 9)
+    p = Paginator(products, 8)
     try:
         products = p.page(page)
     except:
@@ -63,7 +71,7 @@ def add_product(request):
         form = AddProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Product added Successfuly!')
+            messages.success(request, 'เพิ่มวัสดุเรียบร้อยแล้ว!')
             return redirect('dashboard:add_product')
     else:
         form = AddProductForm()
@@ -76,7 +84,7 @@ def add_product(request):
 @login_required
 def delete_product(request, id):
     product = Product.objects.filter(id=id).delete()
-    messages.success(request, 'product has been deleted!', 'success')
+    messages.success(request, 'ลบวัสดุสำเร็จ')
     return redirect('dashboard:products')
 
 
@@ -88,7 +96,7 @@ def edit_product(request, id):
         form = EditProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Product has been updated', 'success')
+            messages.success(request, 'อัพเดทวัสดุ สำเร็จ')
             return redirect('dashboard:products')
     else:
         form = EditProductForm(instance=product)
@@ -105,7 +113,7 @@ def add_category(request):
         form = AddCategoryForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Category added Successfuly!')
+            messages.success(request, 'เพิ่มหมวดหมู่เรียบร้อยแล้ว!')
             return redirect('dashboard:add_category')
     else:
         form = AddCategoryForm()
@@ -122,7 +130,7 @@ def add_subcategory(request):
         form = AddSubcategoryForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Subcategory added Successfuly!')
+            messages.success(request, 'เพิ่มหมวดหมู่ย่อยเรียบร้อยแล้ว!')
             return redirect('dashboard:add_subcategory')
     else:
         form = AddSubcategoryForm()
@@ -137,8 +145,13 @@ def add_subcategory(request):
 def orders_all(request):
     orders_all = Order.objects.all()
 
+    query = request.GET.get('q')
+    if query is not None:
+        lookups = Q(id__icontains=query)
+        orders_all = Order.objects.filter(lookups)
+
     page = request.GET.get('page')
-    p = Paginator(orders_all, 8)
+    p = Paginator(orders_all, 7)
     try:
         orders_all = p.page(page)
     except:

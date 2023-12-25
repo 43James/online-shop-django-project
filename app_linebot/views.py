@@ -72,7 +72,6 @@ line_bot_api = LineBotApi('p/7wo/1oBrhYYteqvWuGQQJz5AADd3pnSiyTJByIju6L6rT5fWsif
 #     return render(request, "home_page.html")
 
 
-
 @csrf_exempt
 def linebot(request):
     print(request.method)
@@ -89,35 +88,47 @@ def linebot(request):
 
                 if text.startswith('ผูกบัญชี'):
                     a = text.split()
-                    username = a[1]
-                    user = MyUser.objects.filter(username=username).first()
+                    if len(a) == 2:
+                        username = a[1]
+                        user = MyUser.objects.filter(username=username).first()
 
-                    if user:
-                        line = UserLine.objects.filter(user=user).first()
-                        userId = event.get('source', {}).get('userId', '')
+                        if user:
+                            line = UserLine.objects.filter(user=user).first()
+                            userId = event.get('source', {}).get('userId', '')
+                            print(user)
+                            print(userId)
 
-                        if not line:
-                            line = UserLine(user=user, userId=userId)
-                            line.save()
+                            if not line:
+                                line = UserLine(user=user, userId=userId)
+                                line.save()
 
-                            # ส่งข้อความแจ้งเตือนผู้ใช้
-                            line_bot_api.push_message(userId, TextSendMessage(text='การผูกบัญชีสำเร็จ!'))
+                                # ส่งข้อความแจ้งเตือนผู้ใช้
+                                line_bot_api.push_message(userId, TextSendMessage(text='ผูกบัญชีสำเร็จ✅'))
 
+                            else:
+                                line.userId = userId
+                                line.save()
+
+                                # ส่งข้อความแจ้งเตือนผู้ใช้ (กรณีอัพเดตการผูกบัญชี)
+                                line_bot_api.push_message(userId, TextSendMessage(text='อัพเดตการผูกบัญชีสำเร็จ✅'))
                         else:
-                            line.userId = userId
-                            line.save()
-
-                            # ส่งข้อความแจ้งเตือนผู้ใช้ (กรณีอัพเดตการผูกบัญชี)
-                            line_bot_api.push_message(userId, TextSendMessage(text='การอัพเดตการผูกบัญชีสำเร็จ!'))
+                            # ส่งข้อความแจ้งเตือนถ้า username ไม่ถูกต้อง
+                            userId = event.get('source', {}).get('userId', '')
+                            line_bot_api.push_message(userId, TextSendMessage(text='⚠ Username ไม่ถูกต้อง❗\nกรุณาตรวจสอบและลองใหม่อีกครั้ง'))
+                    else:
+                        # ส่งข้อความแจ้งเตือนถ้ามีการป้อนข้อมูลไม่ครบ
+                        userId = event.get('source', {}).get('userId', '')
+                        line_bot_api.push_message(userId, TextSendMessage(text='⚠ กรุณาพิมพ์คำว่า "ผูกบัญชี ตามด้วย Username ของคุณค่ะ"'))
                 else:
                     # ส่งข้อความแจ้งเตือนว่าข้อความไม่ถูกต้อง
                     userId = event.get('source', {}).get('userId', '')
-                    line_bot_api.push_message(userId, TextSendMessage(text='ข้อความไม่ถูกต้อง กรุณาพิมพ์คำว่า "ผูกบัญชี ตามด้วย username ของคุณค่า"'))
+                    line_bot_api.push_message(userId, TextSendMessage(text='⚠ ข้อความไม่ถูกต้อง❗\nกรุณาพิมพ์คำว่า "ผูกบัญชี ตามด้วย Username ของคุณค่ะ"'))
 
         except json.JSONDecodeError as e:
             print(f"JSON Decode Error: {e}")
 
     return render(request, "home_page.html")
+
 
 
 #ส่งการแจ้งเตือนไปยังผู้ใช้งานเมื่อเช็คเอ้าท์สินค้า

@@ -19,7 +19,7 @@
     {% for product in products %}
     <tbody>
       <tr>
-        <th scope="row">{{ forloop.counter }}</th>
+        <th scope="row">{{ forloop.counter0|add:products.start_index }}</th>
         <td ><a class="text-decoration-none" href="{{ product.get_absolute_url }}">{{ product.code }}</a></td>
         <!-- <td><a class="text-decoration-none" href="{% url 'shop:product_detail' product.id %}">{{ product.code }}</a></td> -->
         <td>{{ product.category }}</td>
@@ -31,39 +31,40 @@
         <th>{{ product.number }} ชิ้น</td>
         {% endif %}
         <td>{{ product.date_created|date:"d M " }}</td>
-        <td><a class="text-danger text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal{{l.id}}" ><i class="bi bi-trash-fill"></i></a></td>
         <td><a class="text-info text-decoration-none" href="{% url 'dashboard:edit_product' product.id %}"><i class="bi bi-pencil-square"></i></a></td>
+        <td><a class="text-danger text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal{{l.id}}" ><i class="bi bi-trash-fill"></i></a></td>
       </tr>
     </tbody>
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal{{l.id}}" tabindex="-1"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">ยืนยันการลบรายการ
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body justify-content-center d-flex">
-                ท่านต้องการลบ <strong>รายการวัสดุ</strong> ใช่หรือไม่!
-            </div>
-            <div class="modal-footer">
-                <div class="row w-100">
-                    <div class="col-6 d-flex justify-content-start">
-                        <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">ยกเลิก</button>
-                    </div>
-                    <div class="col-6 d-flex justify-content-end">
-                        <a type="button" href="{% url 'dashboard:delete_product' product.id %}"
-                            class="btn btn-danger">ใช่</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <!-- Modal -->
+                        <div class="modal fade" id="exampleModal{{l.id}}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">ยืนยันการลบรายการ
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        ท่านต้องการลบผู้ใช้งาน <strong>{{ product.title }}</strong> ใช่หรือไม่!
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="row w-100">
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">ยกเลิก</button>
+                                            </div>
+                                            <div class="col-6 d-flex justify-content-end">
+                                                <a type="button" href="{% url 'dashboard:delete_product' product.id %}"
+                                                    class="btn btn-danger">ยืนยัน</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
     {% endfor %}
 </table>
 <nav aria-label="Page navigation example">

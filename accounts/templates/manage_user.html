@@ -11,15 +11,13 @@
                     <th scope="col">ชื่อ-สกุล</th>
                     <th scope="col">อีเมลล์</th>
                     <th scope="col">สถานะผู้ใช้งาน</th>
-                    <!-- <th scope="col">วันที่เพิ่ม</th> -->
-                    <!-- <th scope="col">ใช้งานล่าสุด</th> -->
                     <th scope="col">ตัวเลือก</th>
                 </tr>
             </thead>
             <tbody>
                 {% for l in my %}
                 <tr>
-                    <th scope="row">{{ forloop.counter }}</td>
+                    <th scope="row">{{ forloop.counter0|add:my.start_index }}</td>
                     <td scope="row">{{ l.username }}</td>
                     <td scope="row">{{ l.get_full_name }}</td>
                     <td scope="row">{{ l.email }}</td>
@@ -35,6 +33,8 @@
                     <td scope="row" style="color:rgb(0, 134, 0); font-weight: bold;">ผู้จัดการระบบ</td>
                     {% elif l.is_admin %}
                     <td scope="row" style="color:rgb(0, 134, 0); font-weight: bold;">แอดมิน</td>
+                    {% else %}
+                    <td scope="row" style="color:rgb(224, 127, 0); font-weight: bold;">ไม่มีสถานะ</td>
                     {% endif %}
 
                     <!-- <td scope="row">{{ l.date_joined }}</td> -->

@@ -12,32 +12,62 @@ from shop.models import Product  # นำเข้าคลาส Cart ที่
 
 # from cart.views import save_cart
 
-from .forms import ExtendedProfileForm, UserRegistrationForm, UserLoginForm, ManagerLoginForm, UserProfileForm, UserEditForm
+from .forms import RegistrationForm, ProfileForm, UserRegistrationForm, UserLoginForm, ManagerLoginForm, UserProfileForm, UserEditForm, ExtendedProfileForm
 from accounts.models import MyUser, Profile
 from cart.cart import Cart
 
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # สำคัญต่อการอัปเดตเซสชันเพื่อป้องกันไม่ให้ผู้ใช้ถูกล็อกเอาท์
+            messages.success(request, 'รหัสผ่านของคุณได้รับการอัปเดตเรียบร้อยแล้ว!')
+            return redirect('shop:home_page')
+        else:
+            messages.error(request, 'กรุณาแก้ไขข้อผิดพลาดด้านล่าง.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {'form': form})
+
+
+# @login_required
+# def register_pass(request):
+#     return render(request, 'home_page.html')
 
 @login_required
 def user_register(request):
-    if request.method == "POST":
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            print("Here1")
-            form.save(commit=False)
-            form.save()
-            print("Here")
+    if request.method == 'POST':
+        user_form = RegistrationForm(request.POST)
+        profile_form = ProfileForm(request.POST, request.FILES)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save(commit=False)
+            user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.save()
+
             messages.success(request, 'เพิ่มสมาชิกสำเร็จ')
             return redirect('accounts:manage_user')
         else:
             messages.error(request, 'เพิ่มสมาชิกไม่สำเร็จ')
+            
+    else:
+        user_form = RegistrationForm()
+        profile_form = ProfileForm()
 
-    form = UserRegistrationForm()
-    context = {
-        'form':form,
-        'title':'เพิ่มสมาชิก',
-        'pending_orders_count': count_pending_orders(),
-        }
-    return render(request, 'register.html', context)
+    return render(request, 'register.html', {
+        'title' : 'เพิ่มสมาชิก',
+        'user_form': user_form, 
+        'profile_form': profile_form
+        })
 
 
 def manager_login(request):
@@ -86,16 +116,6 @@ def user_login(request):
 
 
 @login_required
-# def user_logout(request):
-#     cart = Cart(request)
-#      # เพิ่มจำนวนสินค้าในสต็อกเมื่อออกจากระบบ
-#     for item_id, item in cart.cart.items():
-#         product = get_object_or_404(Product, id=item['product_id'])
-#         product.number += item['quantity']
-#         product.save()
-#     logout(request)
-#     return redirect('accounts:user_login')
-
 def user_logout(request):
     cart = Cart(request)
     
@@ -251,7 +271,7 @@ def manage_user(request):
         my = MyUser.objects.filter(lookups)
 
     page = request.GET.get('page')
-    p = Paginator(my, 8)
+    p = Paginator(my, 6)
     try:
         my = p.page(page)
     except:
@@ -266,24 +286,26 @@ def manage_user(request):
 @user_passes_test(is_manager)
 @login_required
 def update_user(request, id):
-    my = MyUser.objects.get(id = id)
-    form = UserEditForm()
-    
+    my = MyUser.objects.get(id=id)
+    form = UserEditForm(instance=my)
+
     if request.method == 'POST':
-        form = UserEditForm(request.POST, instance = my)
+        form = UserEditForm(request.POST, instance=my)
 
         if form.is_valid():
-            form.save()
-            id=form.instance.id
+            user = form.save(commit=False)
+            user.is_active = form.cleaned_data['is_general'] or form.cleaned_data['is_manager'] or form.cleaned_data['is_admin']
+            user.save()
+
             messages.success(request, 'แก้ไขข้อมูลสำเร็จ')
             return redirect('accounts:manage_user')
-        else :
+        else:
             messages.error(request, 'กรุณากรอกข้อมูลให้ครบถ้วน')
-            
+
     return render(request, 'update_user.html', {
-        'my':my,
+        'my': my,
         'form': form,
-        'title' : 'แก้ไขข้อมูลสมาชิก',
+        'title': 'แก้ไขข้อมูลสมาชิก',
         'pending_orders_count': count_pending_orders(),
     })
 

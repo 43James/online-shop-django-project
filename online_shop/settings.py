@@ -28,7 +28,7 @@ ALLOWED_HOSTS = ['*']
 # SESSION_COOKIE_SAMESITE = None
 # CSRF_COOKIE_SAMESITE = None
 
-# CSRF_USE_SESSIONS = False
+CSRF_USE_SESSIONS = False
 # CSRF_COOKIE_AGE = None
 # CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
 
@@ -46,6 +46,8 @@ STATIC_DIR = BASE_DIR / 'static'
 # Application definition
 
 INSTALLED_APPS = [
+    'shop.apps.ShopConfig',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,11 +56,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'app_linebot.apps.AppLinebotConfig',
-    'accounts.apps.AccountsConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
-    'shop.apps.ShopConfig',
     'dashboard.apps.DashboardConfig',
+    'accounts.apps.AccountsConfig',
     'django_filters',
     
 ]
