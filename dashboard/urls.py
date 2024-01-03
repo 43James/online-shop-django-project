@@ -2,9 +2,12 @@ from django.urls import path
 
 from dashboard import views
 
+
 app_name = 'dashboard'
 
+
 urlpatterns = [
+    # path('dashboard_home/', order_by_work_group_year_chart_json, name='order_by_work_group_year_chart_json'),
     path('dashboard_home/', views.dashboard_home, name='dashboard_home'),
     path('products/', views.products, name='products'),
     path('products/delete/<int:id>/', views.delete_product, name='delete_product'),

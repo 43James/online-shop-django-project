@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 from app_linebot.views import notify_user_approved
 from django.db.models import Q
 from shop.models import Product
-from accounts.models import MyUser
+from accounts.models import MyUser, Profile
 from orders.models import Order, OrderItem
 from .forms import AddProductForm, AddCategoryForm, AddSubcategoryForm, EditProductForm, ApproveForm
 
@@ -27,6 +27,7 @@ def is_manager(user):
     except:
         raise Http404
 
+
 @user_passes_test(is_manager)
 @login_required
 def dashboard_home(request):
@@ -44,7 +45,7 @@ def products(request):
 
     query = request.GET.get('q')
     if query is not None:
-        lookups = Q(title__icontains=query)
+        lookups = Q(title__icontains=query) | Q(code__icontains=query)
         products = Product.objects.filter(lookups)
 
 

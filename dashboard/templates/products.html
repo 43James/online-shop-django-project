@@ -6,8 +6,8 @@
     <thead class="table table-secondary">
         <tr>
             <th scope="col">n</th>
-            <th scope="col">รหัสวัสดุ/ครุภัณฑ์</th>
-            <th scope="col">หมวดหมู่</th>
+            <th scope="col">รหัสวัสดุ</th>
+            <th scope="col">หมวดหมู่หลัก</th>
             <th scope="col">ชื่อรายการ</th>
             <th scope="col">ราคา</th>
             <th scope="col">จำนวน</th>
@@ -22,7 +22,7 @@
         <th scope="row">{{ forloop.counter0|add:products.start_index }}</th>
         <td ><a class="text-decoration-none" href="{{ product.get_absolute_url }}">{{ product.code }}</a></td>
         <!-- <td><a class="text-decoration-none" href="{% url 'shop:product_detail' product.id %}">{{ product.code }}</a></td> -->
-        <td>{{ product.category }}</td>
+        <td>{{ product.category.category }}</td>
         <td>{{ product.title }}</td>
         <td>{{ product.price }} ฿</td>
         {% if product.number == 0 %}

@@ -65,7 +65,7 @@
 
     <h4 class="mt-2 pt-2 text-muted text-end border-bottom">รวมทั้งหมด : {{ order.get_total_price }} บาท</h4>
 
-    <br><br><br><br>
+    <br><br>
     {% if order.status %}
     <div class="row">
         <div class="col-6 " style="margin-top: 20px;">
@@ -82,9 +82,9 @@
     </div>
     <div class="text-center" style="margin-top: 20px;">
         <p>ลงชื่อ _____________________ ผู้จ่ายวัสดุ</p>
-        <p>(____________________________)</p>
-        <p style="margin-left: 10px;">ตำแหน่ง ________________________________________</p><br>
-        <br>
+        <p>( {{ user.get_full_name }} )</p>
+        <p>ตำแหน่ง เจ้าหน้าที่พัสดุ</p><br>
+        
         <p>วันที่รับวัสดุ &nbsp;&nbsp;{{ order.date_receive|date:"d / M / Y" }} </p><br>
     </div>
     {% endif %}

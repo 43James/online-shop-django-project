@@ -80,7 +80,7 @@ def manager_login(request):
             )
             if user is not None and user.is_manager and user.is_admin:
                 login(request, user)
-                return redirect('dashboard:dashboard_home')
+                return redirect('dashboard:orders')
             else:
                 messages.error(
                     request, 'username or password is wrong', 'danger'
