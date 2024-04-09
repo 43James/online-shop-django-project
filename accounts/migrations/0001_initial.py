@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('gender', models.CharField(default='', max_length=10, verbose_name='เพศ')),
-                ('work_group', models.CharField(max_length=150, verbose_name='กลุ่มงาน')),
+                # ('work_group', models.CharField(max_length=150, verbose_name='กลุ่มงาน')),
                 ('position', models.CharField(max_length=150, verbose_name='ตำแหน่ง')),
                 ('phone', models.CharField(max_length=10, verbose_name='เบอร์โทรศัพท์มือถือ')),
                 ('img', models.ImageField(default='', upload_to='Image_users', verbose_name='รูปภาพ')),

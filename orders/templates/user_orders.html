@@ -35,10 +35,10 @@
             <p>รายการ : <a class="text-decoration-none"
                     href="{{ item.product.get_absolute_url }}">{{item.product.title}}</a></p>
         </div>
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
             <p>ราคา  {{item.price}} บาท</p>
-        </div>
-        <div class="col-md-3">
+        </div> -->
+        <div class="col-md-6 text-end">
             <p>จำนวน  {{item.quantity}} ชิ้น</p>
         </div>
 
@@ -46,7 +46,8 @@
 
     </div>
     {% endfor %}
-    <b style="float: right;">ราคารวม : {{ order.get_total_price }} บาท</b>
+    <!-- <b style="float: right;">ราคารวม : {{ order.get_total_price }} บาท</b> -->
+    <b style="float: right;">รวมจำนวน : {{ order.get_total_sum }} ชิ้น</b>
 </div>
 {% endfor %}
 {% else %}

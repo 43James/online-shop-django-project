@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile, MyUser
+from .models import Profile, MyUser, WorkGroup
 
 
 
@@ -19,7 +19,7 @@ class RegistrationForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['gender', 'position', 'work_group', 'phone']
+        fields = ['gender', 'position', 'workgroup', 'phone']
 
 
 class UserEditForm(UserCreationForm):
@@ -160,17 +160,29 @@ class UserProfileForm(forms.ModelForm):
 class ExtendedProfileForm(forms.ModelForm):
     gender = forms.CharField(label='เพศ', widget=forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}))
     position = forms.CharField(label='ตำแหน่ง', widget=forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}))
-    work_group = forms.CharField(label='กลุ่มงาน', widget=forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}))
+    # workgroup = forms.CharField(label='กลุ่มงาน', widget=forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}))
+    workgroup = forms.ModelChoiceField(queryset=WorkGroup.objects.all(), label='กลุ่มงาน', widget=forms.Select(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}))
     phone = forms.CharField(label='โทรศัพท์', widget=forms.TextInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}))
     img = forms.ImageField(label='รูปโปรไฟล์', required=False, widget=forms.FileInput(attrs={'class': 'form-control mt-2', 'style':'font-weight: bold; color: rgb(8, 0, 255);'}))
 
     class Meta:
         model = Profile
-        fields = ('gender', 'position', 'work_group', 'phone', 'img' )
+        fields = ('gender', 'position', 'workgroup', 'phone', 'img' )
         labels = {
             'gender': 'เพศ',
             'position' : 'ตำแหน่ง',
-            'work_group': 'กลุ่มงาน',
+            'workgroup': 'กลุ่มงาน',
             'phone' : 'โทรศัพท์',
             'img' : 'รูปโปรไฟล์'
         }
+        
+# class ExtendedProfileForm(forms.ModelForm):
+
+#     class Meta:
+#          model = Profile
+#          fields = ('gender', 'position', 'workgroup', 'phone', 'img' )
+
+#     def __init__(self, *args, **kwargs):
+#         super(ExtendedProfileForm, self).__init__(*args, **kwargs)
+#         for visible in self.visible_fields():
+#             visible.field.widget.attrs['class'] = 'form-control'

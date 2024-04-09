@@ -27,10 +27,12 @@
         <td>{{ product.price }} ฿</td>
         {% if product.number == 0 %}
         <th class="bg-danger">{{ product.number }} ชิ้น</td>
+        {% elif product.number == 5 %}
+        <th class="bg-warning">{{ product.number }} ชิ้น</td>
         {% else %}
         <th>{{ product.number }} ชิ้น</td>
         {% endif %}
-        <td>{{ product.date_created|date:"d M " }}</td>
+        <td>{{ product.date_created|date:"d M Y" }}</td>
         <td><a class="text-info text-decoration-none" href="{% url 'dashboard:edit_product' product.id %}"><i class="bi bi-pencil-square"></i></a></td>
         <td><a class="text-danger text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal{{l.id}}" ><i class="bi bi-trash-fill"></i></a></td>
       </tr>
