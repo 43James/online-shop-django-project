@@ -14,7 +14,7 @@ from shop.models import Product  # นำเข้าคลาส Cart ที่
 
 from .forms import RegistrationForm, ProfileForm, UserRegistrationForm, UserLoginForm, ManagerLoginForm, UserProfileForm, UserEditForm, ExtendedProfileForm
 from accounts.models import MyUser, Profile
-from cart.cart import Cart
+# from cart.cart import Cart
 
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash

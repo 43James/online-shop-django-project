@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import MyUser, Profile, WorkGroup
+from accounts.models import MyUser, Profile, WorkGroup
 
 class MyUserAdmin(admin.ModelAdmin):
     list_display = ['id','username','email','is_active','is_manager','is_admin',]

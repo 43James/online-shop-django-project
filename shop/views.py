@@ -28,6 +28,25 @@ def home_page(request):
 	context = {'products': paginat(request ,products),}
 	return render(request, 'home_page.html', context)
 
+
+@login_required
+def product_detail(request, slug):
+	form = QuantityForm()
+	product = get_object_or_404(Product, slug=slug)
+	related_products = Product.objects.filter(category=product.category).all()[:5]
+	context = {
+		'title':product.title,
+		'product':product,
+		'form':form,
+		'favorites':'favorites',
+		'related_products':related_products
+	}
+	if request.user.likes.filter(id=product.id).first():
+		context['favorites'] = 'remove'
+	return render(request, 'product_detail.html', context)
+
+
+
 @login_required
 def search_category(request):
     # print(request.POST.get('filters'))
@@ -50,22 +69,6 @@ def search_category(request):
         "Subcategory" : Subcategory.objects.all(),
     })
 
-
-@login_required
-def product_detail(request, slug):
-	form = QuantityForm()
-	product = get_object_or_404(Product, slug=slug)
-	related_products = Product.objects.filter(category=product.category).all()[:5]
-	context = {
-		'title':product.title,
-		'product':product,
-		'form':form,
-		'favorites':'favorites',
-		'related_products':related_products
-	}
-	if request.user.likes.filter(id=product.id).first():
-		context['favorites'] = 'remove'
-	return render(request, 'product_detail.html', context)
 
 
 @login_required
